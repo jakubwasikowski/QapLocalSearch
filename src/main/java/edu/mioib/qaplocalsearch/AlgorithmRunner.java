@@ -8,14 +8,15 @@ import java.util.Random;
 
 import lombok.Value;
 import edu.mioib.qaplocalsearch.algorithm.Algorithm;
+import edu.mioib.qaplocalsearch.helper.ArraysUtil;
 import edu.mioib.qaplocalsearch.model.AlgorithmResult;
 import edu.mioib.qaplocalsearch.model.Problem;
 import edu.mioib.qaplocalsearch.model.Solution;
-import edu.mioib.qaplocalsearch.helper.ArraysUtil;
 
 @Value
 public class AlgorithmRunner {
-	public List<AlgorithmResult> runAlgorithm(Problem problem, Algorithm algorithm, AlgorithmRunSettings settings) {
+	public List<AlgorithmResult> runAlgorithm(Problem problem, Algorithm algorithm, Evaluator evaluator,
+			AlgorithmRunSettings settings) {
 		List<AlgorithmResult> result = new ArrayList<AlgorithmResult>(settings.getExecutionNumber());
 
 		long startTime = nanoTime();
@@ -23,7 +24,7 @@ public class AlgorithmRunner {
 		int callCounter = 0;
 		while (lastTime - startTime < settings.getMaxExecutionTimeNano()
 				|| callCounter < settings.getExecutionNumber()) {
-			Solution solution = algorithm.resolveProblem(problem, startState(problem.getProblemSize()));
+			Solution solution = algorithm.resolveProblem(problem, evaluator, startState(problem.getProblemSize()));
 			
 			result.add(new AlgorithmResult(solution, nanoTime() - lastTime));
 
