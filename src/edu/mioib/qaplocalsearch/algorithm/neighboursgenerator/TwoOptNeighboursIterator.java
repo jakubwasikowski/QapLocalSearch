@@ -1,40 +1,49 @@
 package edu.mioib.qaplocalsearch.algorithm.neighboursgenerator;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.NoSuchElementException;
 
+import lombok.Getter;
 import edu.mioib.qaplocalsearch.helper.ArraysUtil;
 
 public class TwoOptNeighboursIterator implements NeighboursIterator {
 
-	@Deprecated
-	public List<int[]> generateAllNeighbours(int[] state) {
-		List<int[]> result = new ArrayList<int[]>(getNeighboursNumber(state));
-		for (int i = 0; i < state.length; i++) {
-			for (int j = i + 1; j < state.length; j++) {
-				ArraysUtil.swap(state, i, j);
+	@Getter
+	private int neighboursNumber;
+	private int[] state;
+	private int idx1;
+	private int idx2;
 
-				ArraysUtil.swap(state, i, j);
-			}
-		}
-
-		return result;
-	}
-
-	@Override
-	public int getNeighboursNumber(int[] state) {
-		return (state.length * state.length - 1) / 2;
+	public TwoOptNeighboursIterator(int[] state) {
+		this.state = state;
+		this.idx1 = this.idx2 = 0;
+		this.neighboursNumber = (state.length * (state.length - 1)) / 2;
 	}
 
 	@Override
 	public boolean hasNext() {
-		// TODO Auto-generated method stub
-		return false;
+		return !(idx1 >= state.length - 2 && idx2 >= state.length - 1);
 	}
 
 	@Override
 	public int[] next() {
-		// TODO Auto-generated method stub
-		return null;
+		if (!(idx1 == 0 && idx2 == 0)) {
+			ArraysUtil.swap(state, idx1, idx2);
+		}
+		setNextIndexes();
+		ArraysUtil.swap(state, idx1, idx2);
+		return state;
+	}
+
+	private void setNextIndexes() {
+		if (idx1 >= state.length - 2 && idx2 >= state.length - 1) {
+			throw new NoSuchElementException();
+		}
+
+		if (idx2 == state.length - 1) {
+			idx1++;
+			idx2 = idx1 + 1;
+		} else {
+			idx2++;
+		}
 	}
 }
