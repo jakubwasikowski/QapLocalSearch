@@ -7,8 +7,9 @@ public class GreedyAlgorithm implements Algorithm {
 
 	@Override
 	public Solution resolveProblem(Problem problem) {
-		// TODO Auto-generated method stub
+		
 		return null;
+
 	}
 
 }
