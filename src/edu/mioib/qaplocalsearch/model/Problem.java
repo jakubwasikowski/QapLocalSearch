@@ -6,5 +6,5 @@ import lombok.Value;
 public class Problem {
 	int problemSize;
 	int[][] localisations;
-	int[][] solution;
+	int[][] facilities;
 }

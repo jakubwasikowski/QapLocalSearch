@@ -5,6 +5,6 @@ import edu.mioib.qaplocalsearch.model.Solution;
 
 public interface Algorithm {
 
-	Solution resolveProblem(Problem problem);
+	Solution resolveProblem(Problem problem, int[] startState);
 	
 }

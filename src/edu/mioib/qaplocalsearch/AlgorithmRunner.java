@@ -23,7 +23,7 @@ public class AlgorithmRunner {
 		int callCounter = 0;
 		while (lastTime - startTime < settings.getMaxExecutionTimeNano()
 				|| callCounter < settings.getExecutionNumber()) {
-			Solution solution = algorithm.resolveProblem(problem);
+			Solution solution = algorithm.resolveProblem(problem, startState(problem.getProblemSize()));
 			
 			result.add(new AlgorithmResult(solution, nanoTime() - lastTime));
 
