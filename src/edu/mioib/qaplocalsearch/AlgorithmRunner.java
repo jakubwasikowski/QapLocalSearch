@@ -1,29 +1,34 @@
 package edu.mioib.qaplocalsearch;
 
 import static java.lang.System.nanoTime;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Value;
 import edu.mioib.qaplocalsearch.algorithm.Algorithm;
+import edu.mioib.qaplocalsearch.model.AlgorithmResult;
 import edu.mioib.qaplocalsearch.model.Problem;
 import edu.mioib.qaplocalsearch.model.Solution;
 
 @Value
 public class AlgorithmRunner {
-	Problem problem;
-	Algorithm algorithm;
-	AlgorithmRunSettings settings;
+	public static List<AlgorithmResult> runAlgorithm(Problem problem, Algorithm algorithm, AlgorithmRunSettings settings) {
+		List<AlgorithmResult> result = new ArrayList<AlgorithmResult>(settings.getExecutionNumber());
 
-	public void runAlgorithm(){
 		long startTime = nanoTime();
+		long lastTime = startTime;
 		int callCounter = 0;
-
-		Solution[] algorithmSolutions = new Solution[settings.executionNumber];
-		while (nanoTime() - startTime < settings.getMaxExecutionTimeNano()
+		while (lastTime - startTime < settings.getMaxExecutionTimeNano()
 				|| callCounter < settings.getExecutionNumber()) {
-			algorithmSolutions[callCounter] = algorithm.resolveProblem(problem);
+			Solution solution = algorithm.resolveProblem(problem);
+			
+			result.add(new AlgorithmResult(solution, nanoTime() - lastTime));
 
+			lastTime = nanoTime();
 			callCounter++;
 		}
 
-		long avgTime = (nanoTime() - startTime) / callCounter;
+		return result;
 	}
 }
