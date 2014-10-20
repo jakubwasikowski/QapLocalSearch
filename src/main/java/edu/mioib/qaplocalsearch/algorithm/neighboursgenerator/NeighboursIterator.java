@@ -2,7 +2,7 @@ package edu.mioib.qaplocalsearch.algorithm.neighboursgenerator;
 
 
 public interface NeighboursIterator {
-	void getState();
+	void switchToOriginalState();
 
 	boolean hasNext();
 
@@ -12,7 +12,7 @@ public interface NeighboursIterator {
 
 	void saveCurrentNeighbourAsTheBest();
 
-	void getTheBestNeighbour();
+	void switchToTheBestNeighbour();
 	
 	boolean isTheBestExists();
 }

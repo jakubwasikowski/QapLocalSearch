@@ -32,7 +32,7 @@ public class TwoOptNeighboursIterator implements NeighboursIterator {
 	}
 
 	@Override
-	public void getState() {
+	public void switchToOriginalState() {
 		if (lastGotState != StateType.ORIGINAL_STATE) {
 			if (lastGotState == StateType.THE_BEST_NEIGHBOUR) {
 				ArraysUtil.swap(state, idx1Best, idx2Best);
@@ -86,7 +86,7 @@ public class TwoOptNeighboursIterator implements NeighboursIterator {
 	}
 
 	@Override
-	public void getTheBestNeighbour() {
+	public void switchToTheBestNeighbour() {
 		if (idx1Best == 0 && idx2Best == 0) {
 			throw new IllegalStateException();
 		}

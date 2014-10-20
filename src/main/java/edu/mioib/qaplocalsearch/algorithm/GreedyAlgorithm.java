@@ -10,21 +10,24 @@ public class GreedyAlgorithm implements Algorithm {
 	@Override
 	public Solution resolveProblem(Problem problem, Evaluator evaluator, int[] currentState) {
 		int currentEvaluation = evaluator.evaluateState(problem, currentState);
-		boolean currentStateChanged = false;
+		boolean currentStateChanged;
 		
 		TwoOptNeighboursIterator neighbourIterator;
 		do{
 			neighbourIterator = new TwoOptNeighboursIterator(currentState);
 			currentStateChanged = false;
 			while (neighbourIterator.hasNext()) {
-				int[] newState = neighbourIterator.next();
-				int newStateEvaluation = evaluator.evaluateState(problem, newState);
+				neighbourIterator.next();
+				int newStateEvaluation = evaluator.evaluateState(problem, currentState);
 				if(newStateEvaluation > currentEvaluation){
-					currentState = newState;
+					neighbourIterator.saveCurrentNeighbourAsTheBest();
 					currentEvaluation = newStateEvaluation;
 					currentStateChanged = true;
 					break;
 				}
+			}
+			if (!currentStateChanged) {
+
 			}
 		} while(currentStateChanged);
 		
