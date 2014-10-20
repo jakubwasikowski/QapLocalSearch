@@ -15,22 +15,21 @@ public class SolutionParser {
 	}
 
 	public static Solution parseSolutionFile(InputStream inputStream) throws IOException {
-		String content = "";
+		StringBuilder contentBuilder = new StringBuilder();
 		String line = null;
 		try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
 			while ((line = bufferedReader.readLine()) != null) {
-				content += line;
-				content += " ";
+				contentBuilder.append(line).append(" ");
 			}
 		}
-		String[] solutionPart = content.trim().split("\\s+");
+		String[] solutionParts = contentBuilder.toString().trim().split("\\s+");
 
-		int locationsSize = Integer.parseInt(solutionPart[0]);
-		int eval = Integer.parseInt(solutionPart[1]);
+		int locationsSize = Integer.parseInt(solutionParts[0]);
+		int eval = Integer.parseInt(solutionParts[1]);
 
 		int[] locationsOrder = new int[locationsSize];
-		for(int i=2; i<solutionPart.length; i++){
-			locationsOrder[i - 2] = Integer.parseInt(solutionPart[i]);
+		for(int i=2; i<solutionParts.length; i++){
+			locationsOrder[i - 2] = Integer.parseInt(solutionParts[i]);
 		}
 		Solution result = new Solution(eval, locationsOrder);
 		

@@ -7,50 +7,39 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParseException;
+
 import edu.mioib.qaplocalsearch.model.Problem;
 
 public class ProblemParser {
-	private enum ParseState {
-		PROBLEM_SIZE, LOCALIZATIONS, FACILITIES
-	}
-	
 	public static Problem parseProblemFile(String path) throws NumberFormatException, FileNotFoundException,
-			IOException {
+			IOException, ParseException {
 		return parseProblemFile(new FileInputStream(path));
 	}
 
-	public static Problem parseProblemFile(InputStream inputStream) throws NumberFormatException, IOException {
+	public static Problem parseProblemFile(InputStream inputStream) throws NumberFormatException, IOException,
+			ParseException {
 		Problem result = null;
 		try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
+			StringBuilder contentBuilder = new StringBuilder();
 			String line = null;
-			ParseState state = ParseState.PROBLEM_SIZE;
-			int problemSize = 0;
-			int[][] localizationMatrix = null;
-			int[][] facilitiesMatrix = null;
-			int matrixCounter = 0;
 			while ((line = bufferedReader.readLine()) != null) {
-				if (state == ParseState.PROBLEM_SIZE) {
-					problemSize = Integer.parseInt(line.trim());
-					localizationMatrix = new int[problemSize][problemSize];
-					facilitiesMatrix = new int[problemSize][problemSize];
-					state = ParseState.LOCALIZATIONS;
-				} else if (state == ParseState.LOCALIZATIONS && !line.trim().isEmpty()) {
-					String[] matrixElems = line.trim().split("\\s+");
-					for(int i=0; i<matrixElems.length; i++){
-						localizationMatrix[matrixCounter][i] = Integer.parseInt(matrixElems[i]);
-					}
-					matrixCounter++;
-				} else if (state == ParseState.LOCALIZATIONS && line.trim().isEmpty()) {
-					matrixCounter = 0;
-					state = ParseState.FACILITIES;
-				} else if (state == ParseState.FACILITIES && !line.trim().isEmpty()) {
-					String[] matrixElems = line.trim().split("\\s+");
-					for (int i = 0; i < matrixElems.length; i++) {
-						facilitiesMatrix[matrixCounter][i] = Integer.parseInt(matrixElems[i]);
-					}
-					matrixCounter++;
+				contentBuilder.append(line).append(" ");
+			}
+			String[] problemParts = contentBuilder.toString().trim().split("\\s+");
+			
+			int problemSize = Integer.parseInt(problemParts[0]);
+			int[][] localizationMatrix = new int[problemSize][problemSize];
+			int[][] facilitiesMatrix = new int[problemSize][problemSize];
+			
+			for (int i = 0; i < problemSize; i++) {
+				for (int j = 0; j < problemSize; j++) {
+					localizationMatrix[i][j] = Integer.parseInt(problemParts[i * problemSize + j + 1]);
+					facilitiesMatrix[i][j] = Integer.parseInt(problemParts[i * problemSize + j + problemSize
+							* problemSize + 1]);
 				}
 			}
+
 			result = new Problem(problemSize, localizationMatrix, facilitiesMatrix);
 		}
 		return result;
