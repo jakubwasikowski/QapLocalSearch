@@ -52,8 +52,11 @@ public class ExperimentSaver {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
 			for(String[] result: results){
-				for(String elem : result){
-					writer.write(elem + ";");
+				for(int i=0; i<result.length ;i++){
+					writer.write(result[i]);
+					if(i<result.length-2){
+						writer.write(";");
+					}
 				}
 				writer.newLine();
 			}
