@@ -26,7 +26,7 @@ public class AlgorithmRunner {
 				|| callCounter < settings.getExecutionNumber()) {
 			Solution solution = algorithm.resolveProblem(problem, evaluator, startState(problem.getProblemSize()));
 			
-			result.add(new AlgorithmResult(solution, nanoTime() - lastTime));
+			result.add(new AlgorithmResult(algorithm.getName(), solution, nanoTime() - lastTime));
 
 			lastTime = nanoTime();
 			callCounter++;

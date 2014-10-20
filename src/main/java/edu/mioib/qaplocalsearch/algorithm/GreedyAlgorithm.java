@@ -30,4 +30,9 @@ public class GreedyAlgorithm implements Algorithm {
 		
 		return new Solution(currentEvaluation, currentState);
 	}
+
+	@Override
+	public String getName() {
+		return "Greedy";
+	}
 }
