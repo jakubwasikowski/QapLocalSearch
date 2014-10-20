@@ -1,6 +1,7 @@
 package edu.mioib.qaplocalsearch.algorithm;
 
 import java.util.Random;
+
 import edu.mioib.qaplocalsearch.Evaluator;
 import edu.mioib.qaplocalsearch.algorithm.neighboursgenerator.TwoOptNeighboursIterator;
 import edu.mioib.qaplocalsearch.model.Problem;
@@ -10,7 +11,7 @@ public class RandomAlgorithm implements Algorithm {
 
 	@Override
 	public Solution resolveProblem(Problem problem, Evaluator evaluator, int[] startState) {
-		int[] currentState = startState;
+		int[] currentState = startState.clone();
 		int currentEvaluation = evaluator.evaluateState(problem, currentState);
 		boolean currentStateChanged = false;
 		
