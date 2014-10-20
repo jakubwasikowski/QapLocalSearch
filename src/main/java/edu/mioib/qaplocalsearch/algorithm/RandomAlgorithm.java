@@ -10,34 +10,33 @@ import edu.mioib.qaplocalsearch.model.Solution;
 public class RandomAlgorithm implements Algorithm {
 
 	@Override
-	public Solution resolveProblem(Problem problem, Evaluator evaluator, int[] startState) {
-		int[] currentState = startState.clone();
+	public Solution resolveProblem(Problem problem, Evaluator evaluator, int[] currentState) {
 		int currentEvaluation = evaluator.evaluateState(problem, currentState);
-		boolean currentStateChanged = false;
+		boolean currentStateChanged;
 		
 		TwoOptNeighboursIterator neighbourIterator;
 		do{
 			neighbourIterator = new TwoOptNeighboursIterator(currentState);
+			currentStateChanged = false;
 			int neighboursNumber = neighbourIterator.getNeighboursNumber();
-			int[][] currentNighboursArray = new int[neighboursNumber][currentState.length];
-			int counter=0;
-			while(neighbourIterator.hasNext()){
-				currentNighboursArray[counter]=neighbourIterator.next();
-				counter++;
-			}
 			
-			Random rand = new Random();
-			
+			Random rand = new Random();		
 			for(int i=0; i<neighboursNumber; i++){
 				int randomNum = rand.nextInt(neighboursNumber-i);
-				int[] newState = currentNighboursArray[randomNum];
-				int newStateEvaluation = evaluator.evaluateState(problem, newState);
+				for(int j=0; j<randomNum; j++){
+					neighbourIterator.next();
+				}
+				int newStateEvaluation = evaluator.evaluateState(problem, currentState);
 
 				if(newStateEvaluation > currentEvaluation){
-					currentState = newState;
+					neighbourIterator.saveCurrentNeighbourAsTheBest();
+					neighbourIterator.switchToTheBestNeighbour();
 					currentEvaluation = newStateEvaluation;
 					currentStateChanged = true;
 					break;
+				}
+				else{
+					neighbourIterator.switchToOriginalState();
 				}
 			}			
 		} while(currentStateChanged);
