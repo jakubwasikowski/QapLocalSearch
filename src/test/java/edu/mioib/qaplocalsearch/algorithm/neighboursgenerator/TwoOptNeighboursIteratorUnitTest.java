@@ -83,7 +83,7 @@ public class TwoOptNeighboursIteratorUnitTest {
 		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
 		iterator.next();
 		iterator.next();
-		iterator.getState();
+		iterator.switchToOriginalState();
 		assertArrayEquals(new int[] { 1, 2, 3 }, state);
 	}
 
@@ -93,8 +93,8 @@ public class TwoOptNeighboursIteratorUnitTest {
 		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
 		iterator.next();
 		iterator.saveCurrentNeighbourAsTheBest();
-		iterator.getTheBestNeighbour();
-		iterator.getState();
+		iterator.switchToTheBestNeighbour();
+		iterator.switchToOriginalState();
 		assertArrayEquals(new int[] { 1, 2, 3 }, state);
 	}
 
@@ -102,7 +102,7 @@ public class TwoOptNeighboursIteratorUnitTest {
 	public void shouldReturnsCorrectOriginalStateAfterIteratorCreation() {
 		int[] state = new int[] { 1, 2, 3 };
 		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
-		iterator.getState();
+		iterator.switchToOriginalState();
 		assertArrayEquals(new int[] { 1, 2, 3 }, state);
 	}
 
@@ -118,7 +118,7 @@ public class TwoOptNeighboursIteratorUnitTest {
 		int[] state = new int[] { 1, 2, 3 };
 		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
 		iterator.next();
-		iterator.getTheBestNeighbour();
+		iterator.switchToTheBestNeighbour();
 	}
 
 	@Test
@@ -129,7 +129,7 @@ public class TwoOptNeighboursIteratorUnitTest {
 		int[] nextNeigbour = state.clone();
 		iterator.saveCurrentNeighbourAsTheBest();
 		iterator.next();
-		iterator.getTheBestNeighbour();
+		iterator.switchToTheBestNeighbour();
 		assertArrayEquals(nextNeigbour, state);
 	}
 
@@ -141,8 +141,8 @@ public class TwoOptNeighboursIteratorUnitTest {
 		int[] nextNeigbour = state.clone();
 		iterator.saveCurrentNeighbourAsTheBest();
 		iterator.next();
-		iterator.getState();
-		iterator.getTheBestNeighbour();
+		iterator.switchToOriginalState();
+		iterator.switchToTheBestNeighbour();
 		assertArrayEquals(nextNeigbour, state);
 	}
 
