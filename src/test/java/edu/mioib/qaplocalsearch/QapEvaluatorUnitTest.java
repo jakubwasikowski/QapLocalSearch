@@ -35,6 +35,14 @@ public class QapEvaluatorUnitTest {
 	}
 
 	@Test
+	public void shouldReturnEvalTheSameAsInTheSolutionOfchr12a() throws ParseException, IOException {
+		ExperimentResult expResult = getExperimentResult("/chr12a.dat", "/chr12a.sln");
+		int eval = evaluator.evaluateState(expResult.getProblem(), expResult.getSolution().getLocationsOrder());
+		int expectedEval = expResult.getSolution().getFunctionValue();
+		assertEquals(expectedEval, eval);
+	}
+
+	@Test
 	public void shouldReturnEvalTheSameAsInTheSolutionOfHad12() throws NumberFormatException, IOException,
 			ParseException {
 		ExperimentResult expResult = getExperimentResult("/had12.dat", "/had12.sln");

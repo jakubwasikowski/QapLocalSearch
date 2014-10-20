@@ -1,41 +1,64 @@
 package edu.mioib.qaplocalsearch.algorithm;
 
+import java.util.Random;
+
+import lombok.Value;
 import edu.mioib.qaplocalsearch.Evaluator;
 import edu.mioib.qaplocalsearch.algorithm.neighboursgenerator.TwoOptNeighboursIterator;
 import edu.mioib.qaplocalsearch.model.Problem;
 import edu.mioib.qaplocalsearch.model.Solution;
 
+@Value
 public class SimulatedAnnealingAlgorithm implements Algorithm {
+
+	private double startTemperature = 10000;
+	private double coolingRate = 0.003;
 
 	@Override
 	public Solution resolveProblem(Problem problem, Evaluator evaluator,
-			int[] startState) {
-		int[] currentState = startState;
+			int[] currentState) {
+		Random rand = new Random();
+
 		int currentEvaluation = evaluator.evaluateState(problem, currentState);
 
+		int bestEvaluation = currentEvaluation;
+		int[] best = currentState.clone();
+
 		TwoOptNeighboursIterator neighbourIterator;
-		
-        double temp = 10000;
-        double coolingRate = 0.003;
-		while(temp>1)
-		{
+		double temperature = startTemperature;
+		while (temperature > 1) {
 			neighbourIterator = new TwoOptNeighboursIterator(currentState);
 			
-			while(neighbourIterator.hasNext()){
-				int[] newState = neighbourIterator.next();
-				int newStateEvaluation = evaluator.evaluateState(problem, newState);
-				if(newStateEvaluation > currentEvaluation){
-					currentState = newState;
-					currentEvaluation = newStateEvaluation;
-				}
+			int randomNum = rand.nextInt(neighbourIterator.getNeighboursNumber());
+			for (int i = 0; i < randomNum; i++) {
+				neighbourIterator.next();
 			}
-			temp *= 1-coolingRate;
+			int newEvaluation = evaluator.evaluateState(problem, currentState);
+
+			if (!(acceptanceProbability(currentEvaluation, newEvaluation, temperature) > Math.random())) {
+				neighbourIterator.switchToOriginalState();
+			}
+			
+			currentEvaluation = evaluator.evaluateState(problem, currentState);
+			if (currentEvaluation < bestEvaluation) {
+				best = currentState.clone();
+				bestEvaluation = currentEvaluation;
+			}
+			
+			temperature *= 1 - coolingRate;
 		}
-		return new Solution(currentEvaluation, currentState);
+		return new Solution(bestEvaluation, best);
 	}
 
 	@Override
 	public String getName() {
 		return "Simulated Anneling";
+	}
+
+	private double acceptanceProbability(int currentEval, int newEval, double temperature) {
+		if (newEval < currentEval) {
+			return 1.0;
+		}
+		return Math.exp((currentEval - newEval) / temperature);
 	}
 }

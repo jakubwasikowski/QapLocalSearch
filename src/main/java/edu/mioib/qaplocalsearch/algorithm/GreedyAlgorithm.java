@@ -19,7 +19,7 @@ public class GreedyAlgorithm implements Algorithm {
 			while (neighbourIterator.hasNext()) {
 				neighbourIterator.next();
 				int newStateEvaluation = evaluator.evaluateState(problem, currentState);
-				if(newStateEvaluation > currentEvaluation){
+				if (newStateEvaluation < currentEvaluation) {
 					neighbourIterator.saveCurrentNeighbourAsTheBest();
 					neighbourIterator.switchToTheBestNeighbour();
 					currentEvaluation = newStateEvaluation;

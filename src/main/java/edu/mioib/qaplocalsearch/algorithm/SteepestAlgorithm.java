@@ -16,10 +16,10 @@ public class SteepestAlgorithm implements Algorithm {
 		do{
 			neighbourIterator = new TwoOptNeighboursIterator(currentState);
 			currentStateChanged = false;
-			while (neighbourIterator.hasNext()){
+			while (neighbourIterator.hasNext()) {
 				neighbourIterator.next();
 				int newStateEvaluation = evaluator.evaluateState(problem, currentState);
-				if(newStateEvaluation > currentEvaluation){
+				if (newStateEvaluation < currentEvaluation) {
 					neighbourIterator.saveCurrentNeighbourAsTheBest();
 					currentEvaluation = newStateEvaluation;
 					currentStateChanged = true;
