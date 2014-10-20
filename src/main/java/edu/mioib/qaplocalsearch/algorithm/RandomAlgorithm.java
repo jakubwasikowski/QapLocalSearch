@@ -1,6 +1,7 @@
 package edu.mioib.qaplocalsearch.algorithm;
 
 import java.util.Random;
+
 import edu.mioib.qaplocalsearch.Evaluator;
 import edu.mioib.qaplocalsearch.algorithm.neighboursgenerator.TwoOptNeighboursIterator;
 import edu.mioib.qaplocalsearch.model.Problem;
@@ -42,5 +43,10 @@ public class RandomAlgorithm implements Algorithm {
 		} while(currentStateChanged);
 		
 		return new Solution(currentEvaluation, currentState);
+	}
+
+	@Override
+	public String getName() {
+		return "Random";
 	}
 }

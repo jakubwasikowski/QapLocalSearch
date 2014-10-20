@@ -5,34 +5,37 @@ import edu.mioib.qaplocalsearch.algorithm.neighboursgenerator.TwoOptNeighboursIt
 import edu.mioib.qaplocalsearch.model.Problem;
 import edu.mioib.qaplocalsearch.model.Solution;
 
-public class GreedyAlgorithm implements Algorithm {
+public class SimulatedAnnealingAlgorithm implements Algorithm {
 
 	@Override
-	public Solution resolveProblem(Problem problem, Evaluator evaluator, int[] startState) {
+	public Solution resolveProblem(Problem problem, Evaluator evaluator,
+			int[] startState) {
 		int[] currentState = startState;
 		int currentEvaluation = evaluator.evaluateState(problem, currentState);
-		boolean currentStateChanged = false;
-		
+
 		TwoOptNeighboursIterator neighbourIterator;
-		do{
+		
+        double temp = 10000;
+        double coolingRate = 0.003;
+		while(temp>1)
+		{
 			neighbourIterator = new TwoOptNeighboursIterator(currentState);
-			currentStateChanged = false;
-			while(neighbourIterator.hasNext() && !currentStateChanged){
+			
+			while(neighbourIterator.hasNext()){
 				int[] newState = neighbourIterator.next();
 				int newStateEvaluation = evaluator.evaluateState(problem, newState);
 				if(newStateEvaluation > currentEvaluation){
 					currentState = newState;
 					currentEvaluation = newStateEvaluation;
-					currentStateChanged = true;
 				}
 			}
-		} while(currentStateChanged);
-		
+			temp *= 1-coolingRate;
+		}
 		return new Solution(currentEvaluation, currentState);
 	}
 
 	@Override
 	public String getName() {
-		return "Greedy";
+		return "Simulated Anneling";
 	}
 }

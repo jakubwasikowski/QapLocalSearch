@@ -8,4 +8,5 @@ public interface Algorithm {
 
 	Solution resolveProblem(Problem problem, Evaluator evaluator, int[] startState);
 	
+	String getName();
 }
