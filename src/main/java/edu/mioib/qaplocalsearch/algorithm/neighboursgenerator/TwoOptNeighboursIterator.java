@@ -102,4 +102,9 @@ public class TwoOptNeighboursIterator implements NeighboursIterator {
 		}
 		return state;
 	}
+
+	@Override
+	public boolean isTheBestExists() {
+		return !(idx1Best == 0 && idx2Best == 0);
+	}
 }

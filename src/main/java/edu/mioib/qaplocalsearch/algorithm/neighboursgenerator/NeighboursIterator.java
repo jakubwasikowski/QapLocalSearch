@@ -13,4 +13,6 @@ public interface NeighboursIterator {
 	void saveCurrentNeighbourAsTheBest();
 
 	int[] getTheBestNeighbour();
+	
+	boolean isTheBestExists();
 }
