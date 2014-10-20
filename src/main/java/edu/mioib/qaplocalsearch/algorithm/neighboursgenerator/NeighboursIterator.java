@@ -2,17 +2,17 @@ package edu.mioib.qaplocalsearch.algorithm.neighboursgenerator;
 
 
 public interface NeighboursIterator {
-	int[] getState();
+	void getState();
 
 	boolean hasNext();
 
-	int[] next();
+	void next();
 
 	int getNeighboursNumber();
 
 	void saveCurrentNeighbourAsTheBest();
 
-	int[] getTheBestNeighbour();
+	void getTheBestNeighbour();
 	
 	boolean isTheBestExists();
 }

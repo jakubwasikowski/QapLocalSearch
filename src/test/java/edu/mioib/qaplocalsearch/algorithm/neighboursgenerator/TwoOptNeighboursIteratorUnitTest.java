@@ -42,17 +42,23 @@ public class TwoOptNeighboursIteratorUnitTest {
 		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
 		
 		assertTrue(iterator.hasNext());
-		assertArrayEquals(new int[]{2, 1, 3, 4}, iterator.next());
+		iterator.next();
+		assertArrayEquals(new int[]{2, 1, 3, 4}, state);
 		assertTrue(iterator.hasNext());
-		assertArrayEquals(new int[]{3, 2, 1, 4}, iterator.next());
+		iterator.next();
+		assertArrayEquals(new int[] { 3, 2, 1, 4 }, state);
 		assertTrue(iterator.hasNext());
-		assertArrayEquals(new int[]{4, 2, 3, 1}, iterator.next());
+		iterator.next();
+		assertArrayEquals(new int[] { 4, 2, 3, 1 }, state);
 		assertTrue(iterator.hasNext());
-		assertArrayEquals(new int[]{1, 3, 2, 4}, iterator.next());
+		iterator.next();
+		assertArrayEquals(new int[] { 1, 3, 2, 4 }, state);
 		assertTrue(iterator.hasNext());
-		assertArrayEquals(new int[]{1, 4, 3, 2}, iterator.next());
+		iterator.next();
+		assertArrayEquals(new int[] { 1, 4, 3, 2 }, state);
 		assertTrue(iterator.hasNext());
-		assertArrayEquals(new int[]{1, 2, 4, 3}, iterator.next());
+		iterator.next();
+		assertArrayEquals(new int[] { 1, 2, 4, 3 }, state);
 		assertFalse(iterator.hasNext());
 	}
 	
@@ -77,7 +83,8 @@ public class TwoOptNeighboursIteratorUnitTest {
 		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
 		iterator.next();
 		iterator.next();
-		assertArrayEquals(new int[] { 1, 2, 3 }, iterator.getState());
+		iterator.getState();
+		assertArrayEquals(new int[] { 1, 2, 3 }, state);
 	}
 
 	@Test
@@ -87,14 +94,16 @@ public class TwoOptNeighboursIteratorUnitTest {
 		iterator.next();
 		iterator.saveCurrentNeighbourAsTheBest();
 		iterator.getTheBestNeighbour();
-		assertArrayEquals(new int[] { 1, 2, 3 }, iterator.getState());
+		iterator.getState();
+		assertArrayEquals(new int[] { 1, 2, 3 }, state);
 	}
 
 	@Test
 	public void shouldReturnsCorrectOriginalStateAfterIteratorCreation() {
 		int[] state = new int[] { 1, 2, 3 };
 		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
-		assertArrayEquals(new int[] { 1, 2, 3 }, iterator.getState());
+		iterator.getState();
+		assertArrayEquals(new int[] { 1, 2, 3 }, state);
 	}
 
 	@Test(expected = IllegalStateException.class)
@@ -116,21 +125,25 @@ public class TwoOptNeighboursIteratorUnitTest {
 	public void shouldReturnsCorrectTheBestAfterUseOfNext() {
 		int[] state = new int[] { 1, 2, 3 };
 		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
-		int[] nextNeigbour = iterator.next();
+		iterator.next();
+		int[] nextNeigbour = state.clone();
 		iterator.saveCurrentNeighbourAsTheBest();
 		iterator.next();
-		assertArrayEquals(nextNeigbour, iterator.getTheBestNeighbour());
+		iterator.getTheBestNeighbour();
+		assertArrayEquals(nextNeigbour, state);
 	}
 
 	@Test
 	public void shouldReturnsCorrectTheBestAfterUseOfGetState() {
 		int[] state = new int[] { 1, 2, 3 };
 		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
-		int[] nextNeigbour = iterator.next();
+		iterator.next();
+		int[] nextNeigbour = state.clone();
 		iterator.saveCurrentNeighbourAsTheBest();
 		iterator.next();
 		iterator.getState();
-		assertArrayEquals(nextNeigbour, iterator.getTheBestNeighbour());
+		iterator.getTheBestNeighbour();
+		assertArrayEquals(nextNeigbour, state);
 	}
 
 }

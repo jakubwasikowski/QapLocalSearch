@@ -32,7 +32,7 @@ public class TwoOptNeighboursIterator implements NeighboursIterator {
 	}
 
 	@Override
-	public int[] getState() {
+	public void getState() {
 		if (lastGotState != StateType.ORIGINAL_STATE) {
 			if (lastGotState == StateType.THE_BEST_NEIGHBOUR) {
 				ArraysUtil.swap(state, idx1Best, idx2Best);
@@ -41,8 +41,6 @@ public class TwoOptNeighboursIterator implements NeighboursIterator {
 			}
 			lastGotState = StateType.ORIGINAL_STATE;
 		}
-
-		return state;
 	}
 
 	@Override
@@ -51,7 +49,7 @@ public class TwoOptNeighboursIterator implements NeighboursIterator {
 	}
 
 	@Override
-	public int[] next() {
+	public void next() {
 		if (lastGotState != StateType.ORIGINAL_STATE) {
 			if (lastGotState == StateType.THE_BEST_NEIGHBOUR) {
 				ArraysUtil.swap(state, idx1Best, idx2Best);
@@ -63,7 +61,6 @@ public class TwoOptNeighboursIterator implements NeighboursIterator {
 
 		setNextIndexes();
 		ArraysUtil.swap(state, idx1, idx2);
-		return state;
 	}
 
 	private void setNextIndexes() {
@@ -89,7 +86,7 @@ public class TwoOptNeighboursIterator implements NeighboursIterator {
 	}
 
 	@Override
-	public int[] getTheBestNeighbour() {
+	public void getTheBestNeighbour() {
 		if (idx1Best == 0 && idx2Best == 0) {
 			throw new IllegalStateException();
 		}
@@ -100,7 +97,6 @@ public class TwoOptNeighboursIterator implements NeighboursIterator {
 			ArraysUtil.swap(state, idx1Best, idx2Best);
 			lastGotState = StateType.THE_BEST_NEIGHBOUR;
 		}
-		return state;
 	}
 
 	@Override
