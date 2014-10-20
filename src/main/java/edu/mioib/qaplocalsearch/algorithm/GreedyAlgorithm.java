@@ -21,13 +21,14 @@ public class GreedyAlgorithm implements Algorithm {
 				int newStateEvaluation = evaluator.evaluateState(problem, currentState);
 				if(newStateEvaluation > currentEvaluation){
 					neighbourIterator.saveCurrentNeighbourAsTheBest();
+					neighbourIterator.switchToTheBestNeighbour();
 					currentEvaluation = newStateEvaluation;
 					currentStateChanged = true;
 					break;
 				}
 			}
 			if (!currentStateChanged) {
-
+				neighbourIterator.switchToOriginalState();
 			}
 		} while(currentStateChanged);
 		
