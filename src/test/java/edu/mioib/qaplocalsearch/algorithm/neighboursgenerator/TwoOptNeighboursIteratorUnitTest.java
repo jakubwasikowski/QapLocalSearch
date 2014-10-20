@@ -71,4 +71,66 @@ public class TwoOptNeighboursIteratorUnitTest {
 		iterator.next();
 	}
 
+	@Test
+	public void shouldReturnsCorrectOriginalStateAfterUseOfNext() {
+		int[] state = new int[] { 1, 2, 3 };
+		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
+		iterator.next();
+		iterator.next();
+		assertArrayEquals(new int[] { 1, 2, 3 }, iterator.getState());
+	}
+
+	@Test
+	public void shouldReturnsCorrectOriginalStateAfterUseOfTheBest() {
+		int[] state = new int[] { 1, 2, 3 };
+		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
+		iterator.next();
+		iterator.saveCurrentNeighbourAsTheBest();
+		iterator.getTheBestNeighbour();
+		assertArrayEquals(new int[] { 1, 2, 3 }, iterator.getState());
+	}
+
+	@Test
+	public void shouldReturnsCorrectOriginalStateAfterIteratorCreation() {
+		int[] state = new int[] { 1, 2, 3 };
+		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
+		assertArrayEquals(new int[] { 1, 2, 3 }, iterator.getState());
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void shouldThrowIllegalStateExceptionWhenSaveIsCallBeforeNext() {
+		int[] state = new int[] { 1, 2, 3 };
+		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
+		iterator.saveCurrentNeighbourAsTheBest();
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void shouldThrowIllegalStateExceptionWhenGetBestIsCallBeforeSave() {
+		int[] state = new int[] { 1, 2, 3 };
+		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
+		iterator.next();
+		iterator.getTheBestNeighbour();
+	}
+
+	@Test
+	public void shouldReturnsCorrectTheBestAfterUseOfNext() {
+		int[] state = new int[] { 1, 2, 3 };
+		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
+		int[] nextNeigbour = iterator.next();
+		iterator.saveCurrentNeighbourAsTheBest();
+		iterator.next();
+		assertArrayEquals(nextNeigbour, iterator.getTheBestNeighbour());
+	}
+
+	@Test
+	public void shouldReturnsCorrectTheBestAfterUseOfGetState() {
+		int[] state = new int[] { 1, 2, 3 };
+		TwoOptNeighboursIterator iterator = new TwoOptNeighboursIterator(state);
+		int[] nextNeigbour = iterator.next();
+		iterator.saveCurrentNeighbourAsTheBest();
+		iterator.next();
+		iterator.getState();
+		assertArrayEquals(nextNeigbour, iterator.getTheBestNeighbour());
+	}
+
 }
