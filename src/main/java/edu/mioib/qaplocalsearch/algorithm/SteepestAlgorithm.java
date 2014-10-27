@@ -32,7 +32,7 @@ public class SteepestAlgorithm extends AbstractAlgorithm {
 			} else {
 				neighbourIterator.switchToTheBestNeighbour();
 			}
-		} while (currentStateChanged && checkIfInterrupt(measurer));
+		} while (currentStateChanged && !checkIfInterrupt(measurer));
 		
 		return new Solution(currentEvaluation, currentState);
 	}

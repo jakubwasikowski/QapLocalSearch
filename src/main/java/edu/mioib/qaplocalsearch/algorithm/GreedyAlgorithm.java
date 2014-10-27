@@ -32,7 +32,7 @@ public class GreedyAlgorithm extends AbstractAlgorithm {
 			if (!currentStateChanged) {
 				neighbourIterator.switchToOriginalState();
 			}
-		} while (currentStateChanged && checkIfInterrupt(measurer));
+		} while (currentStateChanged && !checkIfInterrupt(measurer));
 		
 		return new Solution(currentEvaluation, currentState);
 	}

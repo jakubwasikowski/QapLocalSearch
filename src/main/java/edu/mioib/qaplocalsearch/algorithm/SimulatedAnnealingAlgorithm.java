@@ -27,7 +27,7 @@ public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 
 		TwoOptStateHolder neighbourIterator;
 		double temperature = startTemperature;
-		while (temperature > 1 && checkIfInterrupt(measurer)) {
+		while (temperature > 1 && !checkIfInterrupt(measurer)) {
 			neighbourIterator = new TwoOptStateHolder(currentState);
 			
 			int randomNum = rand.nextInt(neighbourIterator.getNeighboursNumber());
