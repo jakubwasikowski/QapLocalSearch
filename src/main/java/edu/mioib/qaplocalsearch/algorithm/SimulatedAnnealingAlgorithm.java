@@ -11,8 +11,8 @@ import edu.mioib.qaplocalsearch.model.Solution;
 @Value
 public class SimulatedAnnealingAlgorithm implements Algorithm {
 
-	private double startTemperature = 10000;
-	private double coolingRate = 0.003;
+	double startTemperature;
+	double coolingRate;
 
 	@Override
 	public Solution resolveProblem(Problem problem, Evaluator evaluator,
