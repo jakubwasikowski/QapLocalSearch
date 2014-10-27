@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParseException;
 
-import edu.mioib.qaplocalsearch.algorithm.Algorithm;
+import edu.mioib.qaplocalsearch.algorithm.AbstractAlgorithm;
 import edu.mioib.qaplocalsearch.algorithm.GreedyAlgorithm;
 import edu.mioib.qaplocalsearch.algorithm.SimulatedAnnealingAlgorithm;
 import edu.mioib.qaplocalsearch.algorithm.SteepestAlgorithm;
@@ -19,7 +19,7 @@ import edu.mioib.qaplocalsearch.parser.ProblemParser;
 import edu.mioib.qaplocalsearch.parser.SolutionParser;
 
 public class ExperimentRunner {
-	private List<Algorithm> algorithms;
+	private List<AbstractAlgorithm> algorithms;
 	private AlgorithmRunner algorithmRunner;
 
 	private ProblemParser problemParser;
@@ -41,7 +41,7 @@ public class ExperimentRunner {
 	}
 
 	private void initAlgorithm() {
-		algorithms = new ArrayList<Algorithm>();
+		algorithms = new ArrayList<AbstractAlgorithm>();
 		algorithms.add(new GreedyAlgorithm());
 		algorithms.add(new SteepestAlgorithm());
 		algorithms.add(new SimulatedAnnealingAlgorithm(10000, 0.003));

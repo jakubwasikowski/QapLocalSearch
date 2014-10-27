@@ -1,12 +1,12 @@
 package edu.mioib.qaplocalsearch.algorithm.neighboursgenerator;
 
 
-public interface NeighboursIterator {
+public interface StateHolder {
 	void switchToOriginalState();
 
-	boolean hasNext();
+	boolean hasNextNeighbour();
 
-	void next();
+	void nextNeighbour();
 
 	int getNeighboursNumber();
 

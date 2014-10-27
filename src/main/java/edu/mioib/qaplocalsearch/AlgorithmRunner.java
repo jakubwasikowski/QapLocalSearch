@@ -1,13 +1,11 @@
 package edu.mioib.qaplocalsearch;
 
-import static java.lang.System.nanoTime;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import lombok.Value;
-import edu.mioib.qaplocalsearch.algorithm.Algorithm;
+import edu.mioib.qaplocalsearch.algorithm.AbstractAlgorithm;
 import edu.mioib.qaplocalsearch.helper.ArraysUtil;
 import edu.mioib.qaplocalsearch.model.AlgorithmResult;
 import edu.mioib.qaplocalsearch.model.Problem;
@@ -15,20 +13,20 @@ import edu.mioib.qaplocalsearch.model.Solution;
 
 @Value
 public class AlgorithmRunner {
-	public List<AlgorithmResult> runAlgorithm(Problem problem, Algorithm algorithm, Evaluator evaluator,
+	public List<AlgorithmResult> runAlgorithm(Problem problem, AbstractAlgorithm algorithm, Evaluator evaluator,
 			AlgorithmRunSettings settings) {
 		List<AlgorithmResult> result = new ArrayList<AlgorithmResult>(settings.getExecutionNumber());
 
-		long startTime = nanoTime();
-		long lastTime = startTime;
+		AlgorithmRunMeasurer measurer = new AlgorithmRunMeasurer(settings);
 		int callCounter = 0;
-		while (lastTime - startTime < settings.getMaxExecutionTimeNano()
-				|| callCounter < settings.getExecutionNumber()) {
-			Solution solution = algorithm.resolveProblem(problem, evaluator, startState(problem.getProblemSize()));
+		while (callCounter < settings.getExecutionNumber()) {
+			measurer.startMeasuring();
+			Solution solution = algorithm.resolveProblem(problem, evaluator, startState(problem.getProblemSize()),
+					measurer);
+			long executionTime = measurer.stopMeasuring();
 			
-			result.add(new AlgorithmResult(algorithm.getName(), solution, nanoTime() - lastTime));
+			result.add(new AlgorithmResult(algorithm.getName(), solution, executionTime));
 
-			lastTime = nanoTime();
 			callCounter++;
 		}
 

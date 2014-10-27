@@ -5,9 +5,9 @@ import lombok.Value;
 @Value
 public class AlgorithmRunSettings {
 	public int executionNumber;
-	public long maxExecutionTimeSec;
+	public long maxExecutionSecTime;
 
-	public long getMaxExecutionTimeNano() {
-		return maxExecutionTimeSec * 1000000000;
+	public long getMaxExecutionNanoTime() {
+		return maxExecutionSecTime * 1000000000;
 	}
 }

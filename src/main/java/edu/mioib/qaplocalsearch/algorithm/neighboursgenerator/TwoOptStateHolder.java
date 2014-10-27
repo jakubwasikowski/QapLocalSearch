@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import lombok.Getter;
 import edu.mioib.qaplocalsearch.helper.ArraysUtil;
 
-public class TwoOptNeighboursIterator implements NeighboursIterator {
+public class TwoOptStateHolder implements StateHolder {
 
 	@Getter
 	private int neighboursNumber;
@@ -23,7 +23,7 @@ public class TwoOptNeighboursIterator implements NeighboursIterator {
 		ORIGINAL_STATE, NEXT_NEIGHBOUR, THE_BEST_NEIGHBOUR
 	}
 
-	public TwoOptNeighboursIterator(int[] state) {
+	public TwoOptStateHolder(int[] state) {
 		this.state = state;
 		this.idx1 = this.idx2 = 0;
 		this.idx1Best = this.idx2Best = 0;
@@ -44,12 +44,12 @@ public class TwoOptNeighboursIterator implements NeighboursIterator {
 	}
 
 	@Override
-	public boolean hasNext() {
+	public boolean hasNextNeighbour() {
 		return !(idx1 >= state.length - 2 && idx2 >= state.length - 1);
 	}
 
 	@Override
-	public void next() {
+	public void nextNeighbour() {
 		if (lastGotState != StateType.ORIGINAL_STATE) {
 			if (lastGotState == StateType.THE_BEST_NEIGHBOUR) {
 				ArraysUtil.swap(state, idx1Best, idx2Best);

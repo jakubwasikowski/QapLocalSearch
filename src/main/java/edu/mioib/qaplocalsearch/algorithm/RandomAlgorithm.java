@@ -2,21 +2,24 @@ package edu.mioib.qaplocalsearch.algorithm;
 
 import java.util.Random;
 
+import edu.mioib.qaplocalsearch.AlgorithmRunMeasurer;
 import edu.mioib.qaplocalsearch.Evaluator;
-import edu.mioib.qaplocalsearch.algorithm.neighboursgenerator.TwoOptNeighboursIterator;
+import edu.mioib.qaplocalsearch.algorithm.neighboursgenerator.TwoOptStateHolder;
 import edu.mioib.qaplocalsearch.model.Problem;
 import edu.mioib.qaplocalsearch.model.Solution;
 
-public class RandomAlgorithm implements Algorithm {
+public class RandomAlgorithm extends AbstractAlgorithm {
 
 	@Override
-	public Solution resolveProblem(Problem problem, Evaluator evaluator, int[] currentState) {
+	public Solution resolveProblem(Problem problem, Evaluator evaluator, int[] currentState,
+			AlgorithmRunMeasurer measurer) {
+
 		int currentEvaluation = evaluator.evaluateState(problem, currentState);
 		boolean currentStateChanged;
 		
-		TwoOptNeighboursIterator neighbourIterator;
+		TwoOptStateHolder neighbourIterator;
 		do{
-			neighbourIterator = new TwoOptNeighboursIterator(currentState);
+			neighbourIterator = new TwoOptStateHolder(currentState);
 			currentStateChanged = false;
 			int neighboursNumber = neighbourIterator.getNeighboursNumber();
 			
@@ -24,7 +27,7 @@ public class RandomAlgorithm implements Algorithm {
 			for(int i=0; i<neighboursNumber; i++){
 				int randomNum = rand.nextInt(neighboursNumber-i);
 				for(int j=0; j<randomNum; j++){
-					neighbourIterator.next();
+					neighbourIterator.nextNeighbour();
 				}
 				int newStateEvaluation = evaluator.evaluateState(problem, currentState);
 
