@@ -1,26 +1,25 @@
 package edu.mioib.qaplocalsearch.algorithm;
 
+import static edu.mioib.qaplocalsearch.helper.ArraysUtil.generateRandomPerm;
 import edu.mioib.qaplocalsearch.AlgorithmRunMeasurer;
 import edu.mioib.qaplocalsearch.Evaluator;
 import edu.mioib.qaplocalsearch.algorithm.neighboursgenerator.TwoOptStateHolder;
-import edu.mioib.qaplocalsearch.model.Problem;
-import edu.mioib.qaplocalsearch.model.Solution;
 
 public class SteepestAlgorithm extends AbstractAlgorithm {
 
 	@Override
-	public Solution resolveProblem(Problem problem, Evaluator evaluator, int[] currentState,
-			AlgorithmRunMeasurer measurer) {
-		int currentEvaluation = evaluator.evaluateState(problem, currentState);
+	public int[] resolveProblem(int permSize, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
+		int[] currentState = generateRandomPerm(permSize);
+		int currentEvaluation = evaluator.evaluateState(currentState);
 		boolean currentStateChanged;
-		
+
 		TwoOptStateHolder neighbourIterator;
-		do{
+		do {
 			neighbourIterator = new TwoOptStateHolder(currentState);
 			currentStateChanged = false;
 			while (neighbourIterator.hasNextNeighbour()) {
 				neighbourIterator.nextNeighbour();
-				int newStateEvaluation = evaluator.evaluateState(problem, currentState);
+				int newStateEvaluation = evaluator.evaluateState(currentState);
 				if (newStateEvaluation < currentEvaluation) {
 					neighbourIterator.saveCurrentNeighbourAsTheBest();
 					currentEvaluation = newStateEvaluation;
@@ -33,8 +32,8 @@ public class SteepestAlgorithm extends AbstractAlgorithm {
 				neighbourIterator.switchToTheBestNeighbour();
 			}
 		} while (currentStateChanged && !checkIfInterrupt(measurer));
-		
-		return new Solution(currentEvaluation, currentState);
+
+		return currentState;
 	}
 
 	@Override

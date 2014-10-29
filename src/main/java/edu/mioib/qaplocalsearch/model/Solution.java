@@ -5,5 +5,5 @@ import lombok.Value;
 @Value
 public class Solution {
 	int functionValue;
-	int[] locationsOrder;
+	int[] perm;
 }

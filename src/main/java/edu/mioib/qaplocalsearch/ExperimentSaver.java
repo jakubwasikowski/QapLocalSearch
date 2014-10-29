@@ -25,8 +25,8 @@ public class ExperimentSaver {
 		results.add(columnsNames);
 	}
 
-	void addExperimentResult(String problemName, AlgorithmResult algorithmResult){
-		int[] localizationsOrder = algorithmResult.getSolution().getLocationsOrder();
+	public void addExperimentResult(String problemName, AlgorithmResult algorithmResult) {
+		int[] localizationsOrder = algorithmResult.getSolution().getPerm();
 		int localizationsSize = localizationsOrder.length;
 		String[] result = new String[localizationsSize+4];
 		
@@ -42,7 +42,7 @@ public class ExperimentSaver {
 		results.add(result);
 	}
 	
-	void saveFile(String path){
+	public void saveFile(String path) {
 		try {
 			File file = new File(path);
  

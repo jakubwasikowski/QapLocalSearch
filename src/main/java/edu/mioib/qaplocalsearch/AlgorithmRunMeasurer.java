@@ -24,7 +24,7 @@ public class AlgorithmRunMeasurer {
 		if (lastTime == null) {
 			throw new IllegalStateException();
 		}
-		return nanoTime() - startTime < settings.getMaxExecutionNanoTime();
+		return (nanoTime() - startTime) < settings.getMaxExecutionNanoTime();
 	}
 
 	public long stopMeasuring() {

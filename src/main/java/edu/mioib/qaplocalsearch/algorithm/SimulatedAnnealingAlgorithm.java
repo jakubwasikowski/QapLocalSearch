@@ -1,13 +1,13 @@
 package edu.mioib.qaplocalsearch.algorithm;
 
+import static edu.mioib.qaplocalsearch.helper.ArraysUtil.generateRandomPerm;
+
 import java.util.Random;
 
 import lombok.Value;
 import edu.mioib.qaplocalsearch.AlgorithmRunMeasurer;
 import edu.mioib.qaplocalsearch.Evaluator;
 import edu.mioib.qaplocalsearch.algorithm.neighboursgenerator.TwoOptStateHolder;
-import edu.mioib.qaplocalsearch.model.Problem;
-import edu.mioib.qaplocalsearch.model.Solution;
 
 @Value
 public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
@@ -16,11 +16,10 @@ public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 	double coolingRate;
 
 	@Override
-	public Solution resolveProblem(Problem problem, Evaluator evaluator, int[] currentState,
-			AlgorithmRunMeasurer measurer) {
+	public int[] resolveProblem(int permSize, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
 		Random rand = new Random();
-
-		int currentEvaluation = evaluator.evaluateState(problem, currentState);
+		int[] currentState = generateRandomPerm(permSize);
+		int currentEvaluation = evaluator.evaluateState(currentState);
 
 		int bestEvaluation = currentEvaluation;
 		int[] best = currentState.clone();
@@ -34,13 +33,13 @@ public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 			for (int i = 0; i < randomNum; i++) {
 				neighbourIterator.nextNeighbour();
 			}
-			int newEvaluation = evaluator.evaluateState(problem, currentState);
+			int newEvaluation = evaluator.evaluateState(currentState);
 
 			if (!(acceptanceProbability(currentEvaluation, newEvaluation, temperature) > Math.random())) {
 				neighbourIterator.switchToOriginalState();
 			}
 			
-			currentEvaluation = evaluator.evaluateState(problem, currentState);
+			currentEvaluation = evaluator.evaluateState(currentState);
 			if (currentEvaluation < bestEvaluation) {
 				best = currentState.clone();
 				bestEvaluation = currentEvaluation;
@@ -48,7 +47,7 @@ public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 			
 			temperature *= 1 - coolingRate;
 		}
-		return new Solution(bestEvaluation, best);
+		return best;
 	}
 
 	@Override

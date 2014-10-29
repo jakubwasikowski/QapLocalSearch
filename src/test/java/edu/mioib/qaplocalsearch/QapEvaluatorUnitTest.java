@@ -8,7 +8,6 @@ import java.io.IOException;
 
 import lombok.Value;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParseException;
@@ -20,16 +19,12 @@ public class QapEvaluatorUnitTest {
 
 	private Evaluator evaluator;
 
-	@Before
-	public void setUp() throws NumberFormatException, IOException, ParseException {
-		evaluator = new QapEvaluator();		
-	}
-
 	@Test
 	public void shouldReturnEvalTheSameAsInTheSolutionOfBur26a() throws NumberFormatException, IOException,
 			ParseException {
 		ExperimentResult expResult = getExperimentResult("/bur26a.dat", "/bur26a.sln");
-		int eval = evaluator.evaluateState(expResult.getProblem(), expResult.getSolution().getLocationsOrder());
+		evaluator = new QapEvaluator(expResult.getProblem());
+		int eval = evaluator.evaluateState(expResult.getSolution().getPerm());
 		int expectedEval = expResult.getSolution().getFunctionValue();
 		assertEquals(expectedEval, eval);
 	}
@@ -37,7 +32,8 @@ public class QapEvaluatorUnitTest {
 	@Test
 	public void shouldReturnEvalTheSameAsInTheSolutionOfchr12a() throws ParseException, IOException {
 		ExperimentResult expResult = getExperimentResult("/chr12a.dat", "/chr12a.sln");
-		int eval = evaluator.evaluateState(expResult.getProblem(), expResult.getSolution().getLocationsOrder());
+		evaluator = new QapEvaluator(expResult.getProblem());
+		int eval = evaluator.evaluateState(expResult.getSolution().getPerm());
 		int expectedEval = expResult.getSolution().getFunctionValue();
 		assertEquals(expectedEval, eval);
 	}
@@ -46,7 +42,8 @@ public class QapEvaluatorUnitTest {
 	public void shouldReturnEvalTheSameAsInTheSolutionOfHad12() throws NumberFormatException, IOException,
 			ParseException {
 		ExperimentResult expResult = getExperimentResult("/had12.dat", "/had12.sln");
-		int eval = evaluator.evaluateState(expResult.getProblem(), expResult.getSolution().getLocationsOrder());
+		evaluator = new QapEvaluator(expResult.getProblem());
+		int eval = evaluator.evaluateState(expResult.getSolution().getPerm());
 		int expectedEval = expResult.getSolution().getFunctionValue();
 		assertEquals(expectedEval, eval);
 	}
@@ -55,7 +52,8 @@ public class QapEvaluatorUnitTest {
 	public void shouldReturnEvalTheSameAsInTheSolutionOfLipa90b() throws NumberFormatException, IOException,
 			ParseException {
 		ExperimentResult expResult = getExperimentResult("/lipa90b.dat", "/lipa90b.sln");
-		int eval = evaluator.evaluateState(expResult.getProblem(), expResult.getSolution().getLocationsOrder());
+		evaluator = new QapEvaluator(expResult.getProblem());
+		int eval = evaluator.evaluateState(expResult.getSolution().getPerm());
 		int expectedEval = expResult.getSolution().getFunctionValue();
 		assertEquals(expectedEval, eval);
 	}
@@ -64,7 +62,8 @@ public class QapEvaluatorUnitTest {
 	public void shouldReturnEvalTheSameAsInTheSolutionOfScr20() throws NumberFormatException, IOException,
 			ParseException {
 		ExperimentResult expResult = getExperimentResult("/scr20.dat", "/scr20.sln");
-		int eval = evaluator.evaluateState(expResult.getProblem(), expResult.getSolution().getLocationsOrder());
+		evaluator = new QapEvaluator(expResult.getProblem());
+		int eval = evaluator.evaluateState(expResult.getSolution().getPerm());
 		int expectedEval = expResult.getSolution().getFunctionValue();
 		assertEquals(expectedEval, eval);
 	}
@@ -73,7 +72,8 @@ public class QapEvaluatorUnitTest {
 	public void shouldReturnEvalTheSameAsInTheSolutionOfSko100a() throws NumberFormatException, IOException,
 			ParseException {
 		ExperimentResult expResult = getExperimentResult("/sko100a.dat", "/sko100a.sln");
-		int eval = evaluator.evaluateState(expResult.getProblem(), expResult.getSolution().getLocationsOrder());
+		evaluator = new QapEvaluator(expResult.getProblem());
+		int eval = evaluator.evaluateState(expResult.getSolution().getPerm());
 		int expectedEval = expResult.getSolution().getFunctionValue();
 		assertEquals(expectedEval, eval);
 	}
@@ -82,7 +82,8 @@ public class QapEvaluatorUnitTest {
 	public void shouldReturnEvalTheSameAsInTheSolutionOfTai40b() throws NumberFormatException, IOException,
 			ParseException {
 		ExperimentResult expResult = getExperimentResult("/tai40b.dat", "/tai40b.sln");
-		int eval = evaluator.evaluateState(expResult.getProblem(), expResult.getSolution().getLocationsOrder());
+		evaluator = new QapEvaluator(expResult.getProblem());
+		int eval = evaluator.evaluateState(expResult.getSolution().getPerm());
 		int expectedEval = expResult.getSolution().getFunctionValue();
 		assertEquals(expectedEval, eval);
 	}
@@ -91,7 +92,8 @@ public class QapEvaluatorUnitTest {
 	public void shouldReturnEvalTheSameAsInTheSolutionOfWil100() throws NumberFormatException, IOException,
 			ParseException {
 		ExperimentResult expResult = getExperimentResult("/wil100.dat", "/wil100.sln");
-		int eval = evaluator.evaluateState(expResult.getProblem(), expResult.getSolution().getLocationsOrder());
+		evaluator = new QapEvaluator(expResult.getProblem());
+		int eval = evaluator.evaluateState(expResult.getSolution().getPerm());
 		int expectedEval = expResult.getSolution().getFunctionValue();
 		assertEquals(expectedEval, eval);
 	}

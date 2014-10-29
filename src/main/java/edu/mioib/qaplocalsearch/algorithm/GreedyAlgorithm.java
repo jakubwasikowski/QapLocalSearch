@@ -1,17 +1,16 @@
 package edu.mioib.qaplocalsearch.algorithm;
 
+import static edu.mioib.qaplocalsearch.helper.ArraysUtil.generateRandomPerm;
 import edu.mioib.qaplocalsearch.AlgorithmRunMeasurer;
 import edu.mioib.qaplocalsearch.Evaluator;
 import edu.mioib.qaplocalsearch.algorithm.neighboursgenerator.TwoOptStateHolder;
-import edu.mioib.qaplocalsearch.model.Problem;
-import edu.mioib.qaplocalsearch.model.Solution;
 
 public class GreedyAlgorithm extends AbstractAlgorithm {
 
 	@Override
-	public Solution resolveProblem(Problem problem, Evaluator evaluator, int[] currentState,
-			AlgorithmRunMeasurer measurer) {
-		int currentEvaluation = evaluator.evaluateState(problem, currentState);
+	public int[] resolveProblem(int permSize, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
+		int[] currentState = generateRandomPerm(permSize);
+		int currentEvaluation = evaluator.evaluateState(currentState);
 		boolean currentStateChanged;
 
 		TwoOptStateHolder neighbourIterator;
@@ -20,7 +19,7 @@ public class GreedyAlgorithm extends AbstractAlgorithm {
 			currentStateChanged = false;
 			while (neighbourIterator.hasNextNeighbour()) {
 				neighbourIterator.nextNeighbour();
-				int newStateEvaluation = evaluator.evaluateState(problem, currentState);
+				int newStateEvaluation = evaluator.evaluateState(currentState);
 				if (newStateEvaluation < currentEvaluation) {
 					neighbourIterator.saveCurrentNeighbourAsTheBest();
 					neighbourIterator.switchToTheBestNeighbour();
@@ -34,7 +33,7 @@ public class GreedyAlgorithm extends AbstractAlgorithm {
 			}
 		} while (currentStateChanged && !checkIfInterrupt(measurer));
 		
-		return new Solution(currentEvaluation, currentState);
+		return currentState;
 	}
 
 	@Override
