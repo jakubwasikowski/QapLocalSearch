@@ -20,23 +20,27 @@ public class ExperimentSaver {
 		columnsNames[1] = "Problem File Name";
 		columnsNames[2] = "Function Value";
 		columnsNames[3] = "Execution Time";
-		columnsNames[4] = "Localizations";
+		columnsNames[4] = "Evaluated states number";
+		columnsNames[5] = "Steps number";
+		columnsNames[6] = "Localizations";
 		
 		results.add(columnsNames);
 	}
 
 	public void addExperimentResult(String problemName, AlgorithmResult algorithmResult) {
-		int[] localizationsOrder = algorithmResult.getSolution().getPerm();
+		int[] localizationsOrder = algorithmResult.getSolution().getState();
 		int localizationsSize = localizationsOrder.length;
-		String[] result = new String[localizationsSize+4];
+		String[] result = new String[localizationsSize+6];
 		
 		result[0] = algorithmResult.getAlgorithmName();
 		result[1] = problemName;
-		result[2] = Integer.toString(algorithmResult.getSolution().getFunctionValue());
+		result[2] = Integer.toString(algorithmResult.getSolution().getEvaluation());
 		result[3] = Long.toString(algorithmResult.getExecutionTime());
+		result[4] = Integer.toString(algorithmResult.getExecutionReport().getEvaluatedStatesNumber());
+		result[5] = Integer.toString(algorithmResult.getExecutionReport().getStepsNumber());
 		
 		for(int i=0; i<localizationsSize; i++){
-			result[i+4] = Integer.toString(localizationsOrder[i]);
+			result[i + 6] = Integer.toString(localizationsOrder[i]);
 		}
 		
 		results.add(result);

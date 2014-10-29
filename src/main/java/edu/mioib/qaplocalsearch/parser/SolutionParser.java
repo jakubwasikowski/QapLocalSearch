@@ -7,14 +7,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import edu.mioib.qaplocalsearch.model.Solution;
+import edu.mioib.qaplocalsearch.model.StateEvaluation;
 
 public class SolutionParser {
-	public static Solution parseSolutionFile(String path) throws FileNotFoundException, IOException {
+	public static StateEvaluation parseSolutionFile(String path) throws FileNotFoundException, IOException {
 		return parseSolutionFile(new FileInputStream(path));
 	}
 
-	public static Solution parseSolutionFile(InputStream inputStream) throws IOException {
+	public static StateEvaluation parseSolutionFile(InputStream inputStream) throws IOException {
 		StringBuilder contentBuilder = new StringBuilder();
 		String line = null;
 		try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
@@ -31,7 +31,7 @@ public class SolutionParser {
 		for(int i=2; i<solutionParts.length; i++){
 			locationsOrder[i - 2] = Integer.parseInt(solutionParts[i]);
 		}
-		Solution result = new Solution(eval, locationsOrder);
+		StateEvaluation result = new StateEvaluation(eval, locationsOrder);
 		
 		return result;
 	}

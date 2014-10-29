@@ -5,8 +5,9 @@ import java.util.List;
 
 import lombok.Value;
 import edu.mioib.qaplocalsearch.algorithm.AbstractAlgorithm;
+import edu.mioib.qaplocalsearch.helper.ArraysUtil;
 import edu.mioib.qaplocalsearch.model.AlgorithmResult;
-import edu.mioib.qaplocalsearch.model.Solution;
+import edu.mioib.qaplocalsearch.model.StateEvaluation;
 
 @Value
 public class AlgorithmRunner {
@@ -14,15 +15,20 @@ public class AlgorithmRunner {
 			AlgorithmRunSettings settings) {
 		List<AlgorithmResult> result = new ArrayList<AlgorithmResult>(settings.getExecutionNumber());
 
-		AlgorithmRunMeasurer measurer = new AlgorithmRunMeasurer(settings);
 		int callCounter = 0;
 		while (callCounter < settings.getExecutionNumber()) {
+			AlgorithmRunMeasurer measurer = new AlgorithmRunMeasurer(settings);
+			int[] startState = ArraysUtil.generateRandomPerm(problemSize);
+			
+			int[] startStateClone = startState.clone();
 			measurer.startMeasuring();
-			int[] perm = algorithm.resolveProblem(problemSize, evaluator, measurer);
+			int[] finalState = algorithm.resolveProblem(startStateClone, evaluator, measurer);
 			long executionTime = measurer.stopMeasuring();
 			
-			Solution solution = new Solution(evaluator.evaluateState(perm), perm);
-			result.add(new AlgorithmResult(algorithm.getName(), solution, executionTime));
+			StateEvaluation initialState = new StateEvaluation(evaluator.evaluateState(startState), startState);
+			StateEvaluation solution = new StateEvaluation(evaluator.evaluateState(finalState), finalState);
+			result.add(new AlgorithmResult(algorithm.getName(), initialState, solution, executionTime, measurer
+					.getExecutionReport()));
 
 			callCounter++;
 		}

@@ -9,8 +9,10 @@ import edu.mioib.qaplocalsearch.helper.ArraysUtil;
 public class SimpleHeuristicAlgorithm extends AbstractAlgorithm {
 
 	@Override
-	public int[] resolveProblem(int permSize, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
+	public int[] resolveProblem(int[] startState, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
 		Random rand = new Random();
+
+		int permSize = startState.length;
 		int[] state = new int[permSize];
 		int currentResultIdx = 0;
 
@@ -27,12 +29,15 @@ public class SimpleHeuristicAlgorithm extends AbstractAlgorithm {
 		ArraysUtil.swap(availableValues, randomFirstIdx, lastAvailableValueIndex);
 		lastAvailableValueIndex--;
 		
+		measurer.recordStep();
+
 		for (; currentResultIdx < permSize; currentResultIdx++) {
 			int bestEval = Integer.MAX_VALUE;
 			int bestAvailableIdx = -1;
 			for (int i = 0; i <= lastAvailableValueIndex; i++) {
 				state[currentResultIdx] = availableValues[i];
 				int stateEval = evaluator.evaluateStatePartially(state, 0, currentResultIdx);
+				measurer.recordEvaluatedState();
 				if (stateEval < bestEval) {
 					bestAvailableIdx = i;
 					bestEval = stateEval;
@@ -42,6 +47,8 @@ public class SimpleHeuristicAlgorithm extends AbstractAlgorithm {
 			state[currentResultIdx] = availableValues[bestAvailableIdx];
 			ArraysUtil.swap(availableValues, bestAvailableIdx, lastAvailableValueIndex);
 			lastAvailableValueIndex--;
+
+			measurer.recordStep();
 		}
 
 		return state;

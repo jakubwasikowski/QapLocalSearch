@@ -1,6 +1,5 @@
 package edu.mioib.qaplocalsearch.algorithm;
 
-import static edu.mioib.qaplocalsearch.helper.ArraysUtil.generateRandomPerm;
 import edu.mioib.qaplocalsearch.AlgorithmRunMeasurer;
 import edu.mioib.qaplocalsearch.Evaluator;
 import edu.mioib.qaplocalsearch.helper.ArraysUtil;
@@ -8,19 +7,21 @@ import edu.mioib.qaplocalsearch.helper.ArraysUtil;
 public class RandomAlgorithm extends AbstractAlgorithm {
 
 	@Override
-	public int[] resolveProblem(int permSize, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
-		int[] currentState = generateRandomPerm(permSize);
+	public int[] resolveProblem(int[] startState, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
+		int[] currentState = startState;
 		int[] bestState = currentState;
-		int bestEvaluation = evaluator.evaluateState(currentState);
+		int bestEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
 
 		while (!checkIfInterrupt(measurer)) {
 			int[] genState = ArraysUtil.generateRandomPerm(currentState.length);
-			int genStateEvaluation = evaluator.evaluateState(genState);
+			int genStateEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, genState);
 
 			if (genStateEvaluation < bestEvaluation) {
 				bestEvaluation = genStateEvaluation;
 				bestState = genState;
 			}
+
+			measurer.recordStep();
 		}
 
 		return bestState;

@@ -14,7 +14,7 @@ import edu.mioib.qaplocalsearch.algorithm.GreedyAlgorithm;
 import edu.mioib.qaplocalsearch.algorithm.SimulatedAnnealingAlgorithm;
 import edu.mioib.qaplocalsearch.algorithm.SteepestAlgorithm;
 import edu.mioib.qaplocalsearch.model.Problem;
-import edu.mioib.qaplocalsearch.model.Solution;
+import edu.mioib.qaplocalsearch.model.StateEvaluation;
 import edu.mioib.qaplocalsearch.parser.ProblemParser;
 import edu.mioib.qaplocalsearch.parser.SolutionParser;
 
@@ -37,7 +37,7 @@ public class ExperimentRunner {
 
 	public void runExperminents() throws IOException, NumberFormatException, ParseException {
 		Problem problem = parseProblemFile(getClass().getResourceAsStream("/tai40b.dat"));
-		Solution solution = parseSolutionFile(getClass().getResourceAsStream("/tai40b.sln"));
+		StateEvaluation solution = parseSolutionFile(getClass().getResourceAsStream("/tai40b.sln"));
 	}
 
 	private void initAlgorithm() {

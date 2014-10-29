@@ -1,7 +1,5 @@
 package edu.mioib.qaplocalsearch.algorithm;
 
-import static edu.mioib.qaplocalsearch.helper.ArraysUtil.generateRandomPerm;
-
 import java.util.Random;
 
 import lombok.Value;
@@ -16,10 +14,10 @@ public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 	double coolingRate;
 
 	@Override
-	public int[] resolveProblem(int permSize, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
+	public int[] resolveProblem(int[] startState, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
 		Random rand = new Random();
-		int[] currentState = generateRandomPerm(permSize);
-		int currentEvaluation = evaluator.evaluateState(currentState);
+		int[] currentState = startState;
+		int currentEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
 
 		int bestEvaluation = currentEvaluation;
 		int[] best = currentState.clone();
@@ -33,19 +31,21 @@ public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 			for (int i = 0; i < randomNum; i++) {
 				neighbourIterator.nextNeighbour();
 			}
-			int newEvaluation = evaluator.evaluateState(currentState);
+			int newEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
 
 			if (!(acceptanceProbability(currentEvaluation, newEvaluation, temperature) > Math.random())) {
 				neighbourIterator.switchToOriginalState();
 			}
 			
-			currentEvaluation = evaluator.evaluateState(currentState);
+			currentEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
 			if (currentEvaluation < bestEvaluation) {
 				best = currentState.clone();
 				bestEvaluation = currentEvaluation;
 			}
 			
 			temperature *= 1 - coolingRate;
+
+			measurer.recordStep();
 		}
 		return best;
 	}

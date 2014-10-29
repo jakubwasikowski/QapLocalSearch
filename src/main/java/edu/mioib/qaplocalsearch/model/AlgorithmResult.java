@@ -5,6 +5,8 @@ import lombok.Value;
 @Value
 public class AlgorithmResult {
 	String algorithmName;
-	Solution solution;
+	StateEvaluation initialState;
+	StateEvaluation solution;
 	long executionTime;
+	ExecutionReport executionReport;
 }
