@@ -44,7 +44,7 @@ public class ComparisonExperimentSaver {
 		result[2] = String.valueOf(localizationsSize);
 		result[3] = Integer.toString(algorithmResult.getSolution().getEvaluation());
 		result[4] = Integer.toString(getSolutionValue(new FileInputStream(problemName+".sln")));
-		result[5] = Long.toString(algorithmResult.getExecutionTime());
+		result[5] = Long.toString(algorithmResult.getExecutionReport().getExecutionTime());
 		result[6] = Integer.toString(algorithmResult.getExecutionReport().getEvaluatedStatesNumber());
 		result[7] = Integer.toString(algorithmResult.getExecutionReport().getStepsNumber());
 		
