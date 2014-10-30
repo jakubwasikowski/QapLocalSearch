@@ -12,6 +12,11 @@ import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParseExceptio
 import edu.mioib.qaplocalsearch.model.Problem;
 
 public class ProblemParser {
+	public static Problem parseProblemFileFromResource(String path) throws NumberFormatException, ParseException,
+			IOException {
+		return parseProblemFile(ProblemParser.class.getResourceAsStream(path));
+	}
+
 	public static Problem parseProblemFile(String path) throws NumberFormatException, FileNotFoundException,
 			IOException, ParseException {
 		return parseProblemFile(new FileInputStream(path));
