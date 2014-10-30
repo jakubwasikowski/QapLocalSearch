@@ -35,7 +35,7 @@ public class ExperimentRunner {
 		AbstractAlgorithm steepest = new SteepestAlgorithm();
 		
 		Evaluator evaluator = new QapEvaluator(problem);
-		AlgorithmRunSettings settings = new AlgorithmRunSettings(10, Long.MAX_VALUE);
+		AlgorithmRunSettings settings = new AlgorithmRunSettings(100, Long.MAX_VALUE);
 		
 		List<AlgorithmResult> greedyResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), greedy, evaluator,
 				settings);
