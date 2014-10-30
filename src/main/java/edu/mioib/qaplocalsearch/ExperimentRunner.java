@@ -63,7 +63,7 @@ public class ExperimentRunner {
 
 	
 	public void runExperimentForExercise2() throws NumberFormatException, ParseException, IOException {
-		String[] problemNameList = {"bur26g", "esc16e", "lipa40b", "nug18", "sko100a", "tai80a", "wil100", "kra30a", "scr12", "sko81"};
+		String[] problemNameList = {"bur26g", "esc16e", "lipa40b", "nug18", /*"sko100a", "tai80a", "wil100",*/ "kra30a", "scr12", /*"sko81"*/};
 
 		AbstractAlgorithm greedy = new GreedyAlgorithm();
 		AbstractAlgorithm steepest = new SteepestAlgorithm();

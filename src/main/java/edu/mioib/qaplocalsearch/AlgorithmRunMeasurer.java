@@ -43,6 +43,6 @@ public class AlgorithmRunMeasurer {
 		long result = nanoTime() - lastTime;
 		lastTime = null;
 
-		return result;
+		return result/1000000000;
 	}
 }
