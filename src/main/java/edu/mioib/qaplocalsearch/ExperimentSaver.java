@@ -15,7 +15,7 @@ public class ExperimentSaver {
 	public ExperimentSaver() {
 		results = new ArrayList<String[]>();
 		
-		String[] columnsNames = new String[5];
+		String[] columnsNames = new String[7];
 		columnsNames[0] = "Algorithm Name";
 		columnsNames[1] = "Problem File Name";
 		columnsNames[2] = "Function Value";
