@@ -7,6 +7,5 @@ public class AlgorithmResult {
 	String algorithmName;
 	StateEvaluation initialState;
 	StateEvaluation solution;
-	long executionTime;
 	ExecutionReport executionReport;
 }
