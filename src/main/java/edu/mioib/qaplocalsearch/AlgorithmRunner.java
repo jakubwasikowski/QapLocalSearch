@@ -18,6 +18,8 @@ public class AlgorithmRunner {
 
 		int callCounter = 0;
 		while (callCounter < settings.getExecutionNumber()) {
+			System.out.println(algorithm.getName() + ": execution no." + (callCounter + 1));
+
 			AlgorithmRunMeasurer measurer = new AlgorithmRunMeasurer(settings);
 			int[] startState = ArraysUtil.generateRandomPerm(problemSize);
 			

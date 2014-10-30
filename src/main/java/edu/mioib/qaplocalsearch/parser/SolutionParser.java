@@ -7,9 +7,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParseException;
+
 import edu.mioib.qaplocalsearch.model.StateEvaluation;
 
 public class SolutionParser {
+	public static StateEvaluation parseSolutionFileFromResource(String path) throws NumberFormatException,
+			ParseException, IOException {
+		return parseSolutionFile(SolutionParser.class.getResourceAsStream(path));
+	}
+
 	public static StateEvaluation parseSolutionFile(String path) throws FileNotFoundException, IOException {
 		return parseSolutionFile(new FileInputStream(path));
 	}
