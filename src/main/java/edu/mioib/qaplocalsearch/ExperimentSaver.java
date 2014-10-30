@@ -35,7 +35,7 @@ public class ExperimentSaver {
 		result[0] = algorithmResult.getAlgorithmName();
 		result[1] = problemName;
 		result[2] = Integer.toString(algorithmResult.getSolution().getEvaluation());
-		result[3] = Long.toString(algorithmResult.getExecutionTime());
+		result[3] = Long.toString(algorithmResult.getExecutionReport().getExecutionTime());
 		result[4] = Integer.toString(algorithmResult.getExecutionReport().getEvaluatedStatesNumber());
 		result[5] = Integer.toString(algorithmResult.getExecutionReport().getStepsNumber());
 		

@@ -7,6 +7,7 @@ import lombok.Value;
 import edu.mioib.qaplocalsearch.algorithm.AbstractAlgorithm;
 import edu.mioib.qaplocalsearch.helper.ArraysUtil;
 import edu.mioib.qaplocalsearch.model.AlgorithmResult;
+import edu.mioib.qaplocalsearch.model.ExecutionReport;
 import edu.mioib.qaplocalsearch.model.StateEvaluation;
 
 @Value
@@ -27,8 +28,10 @@ public class AlgorithmRunner {
 			
 			StateEvaluation initialState = new StateEvaluation(evaluator.evaluateState(startState), startState);
 			StateEvaluation solution = new StateEvaluation(evaluator.evaluateState(finalState), finalState);
-			result.add(new AlgorithmResult(algorithm.getName(), initialState, solution, executionTime, measurer
-					.getExecutionReport()));
+			ExecutionReport executionReport = measurer.getExecutionReport();
+			executionReport.setExecutionTime(executionTime);
+
+			result.add(new AlgorithmResult(algorithm.getName(), initialState, solution, executionReport));
 
 			callCounter++;
 		}
