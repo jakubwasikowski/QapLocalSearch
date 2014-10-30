@@ -14,10 +14,13 @@ import java.util.List;
 
 import edu.mioib.qaplocalsearch.model.AlgorithmResult;
 
-public class ComparisonExperimentSaver {
+public class Ex4ExperimentSaver {
 	List<String[]> results;
+	int exceutionCounter = 0;
+	int currentMinValue = Integer.MAX_VALUE;
+	int valueSum = 0;
 	
-	public ComparisonExperimentSaver() {
+	public Ex4ExperimentSaver() {
 		results = new ArrayList<String[]>();
 		
 		String[] columnsNames = new String[9];
@@ -26,31 +29,33 @@ public class ComparisonExperimentSaver {
 		columnsNames[2] = "Problem Size";
 		columnsNames[3] = "Function Value";
 		columnsNames[4] = "Distance from optimum";
-		columnsNames[5] = "Execution Time";
-		columnsNames[6] = "Evaluated states number";
-		columnsNames[7] = "Steps number";
-		columnsNames[8] = "Localizations";
+		columnsNames[5] = "Current min value";
+		columnsNames[6] = "Current average value";
+		columnsNames[7] = "Execution Number";
 		
 		results.add(columnsNames);
 	}
 
 	public void addExperimentResult(String problemName, AlgorithmResult algorithmResult) throws FileNotFoundException, IOException {
-		int[] localizationsOrder = algorithmResult.getSolution().getState();
-		int localizationsSize = localizationsOrder.length;
-		String[] result = new String[localizationsSize+8];
+		int[] localisationsOrder = algorithmResult.getSolution().getState();
+		int localisationsSize = localisationsOrder.length;
+		String[] result = new String[6];
+		
+		int evaluation = algorithmResult.getSolution().getEvaluation();
+		valueSum += evaluation;
+		if(evaluation<currentMinValue){
+			currentMinValue = evaluation;
+		}
+		exceutionCounter++;
 		
 		result[0] = algorithmResult.getAlgorithmName();
 		result[1] = problemName;
-		result[2] = String.valueOf(localizationsSize);
-		result[3] = Integer.toString(algorithmResult.getSolution().getEvaluation());
-		result[4] = Integer.toString(getSolutionValue(new FileInputStream(problemName+".sln")));
-		result[5] = Long.toString(algorithmResult.getExecutionReport().getExecutionTime());
-		result[6] = Integer.toString(algorithmResult.getExecutionReport().getEvaluatedStatesNumber());
-		result[7] = Integer.toString(algorithmResult.getExecutionReport().getStepsNumber());
-		
-		for(int i=0; i<localizationsSize; i++){
-			result[i + 8] = Integer.toString(localizationsOrder[i]);
-		}
+		result[2] = String.valueOf(localisationsSize);
+		result[3] = Integer.toString(evaluation);
+		result[4] = Integer.toString(evaluation - getSolutionValue(new FileInputStream(problemName+".sln")));
+		result[5] = Integer.toString(currentMinValue);
+		result[6] = Integer.toString((int)(valueSum/exceutionCounter));
+		result[7] = Integer.toString(exceutionCounter);
 		
 		results.add(result);
 	}
