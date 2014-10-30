@@ -6,13 +6,10 @@ import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParseExceptio
 
 public class App {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NumberFormatException, ParseException, IOException {
 		ExperimentRunner er = new ExperimentRunner();
-		try {
-			er.runExperminents();
-		} catch (NumberFormatException | ParseException | IOException e) {
-			e.printStackTrace();
-		}
+
+		er.runExperimentForExercise3();
 	}
 
 }
