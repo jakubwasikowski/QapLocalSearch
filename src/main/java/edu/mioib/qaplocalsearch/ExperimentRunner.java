@@ -15,6 +15,7 @@ import edu.mioib.qaplocalsearch.algorithm.SimpleHeuristicAlgorithm;
 import edu.mioib.qaplocalsearch.algorithm.SteepestAlgorithm;
 import edu.mioib.qaplocalsearch.model.AlgorithmResult;
 import edu.mioib.qaplocalsearch.model.Problem;
+import edu.mioib.qaplocalsearch.saver.Ex2ExperimentSaver;
 import edu.mioib.qaplocalsearch.saver.Ex4ExperimentSaver;
 import edu.mioib.qaplocalsearch.saver.ExperimentSaver;
 import edu.mioib.qaplocalsearch.saver.GenericExperimentSaver;
