@@ -1,4 +1,4 @@
-package edu.mioib.qaplocalsearch;
+package edu.mioib.qaplocalsearch.saver;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
