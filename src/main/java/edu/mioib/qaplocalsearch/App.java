@@ -9,7 +9,7 @@ public class App {
 	public static void main(String[] args) throws NumberFormatException, ParseException, IOException {
 		ExperimentRunner er = new ExperimentRunner();
 
-		er.runExperimentForExercise4();
+		er.runExperimentForExercise2();
 	}
 
 }
