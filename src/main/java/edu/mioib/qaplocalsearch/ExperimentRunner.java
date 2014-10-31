@@ -109,7 +109,7 @@ public class ExperimentRunner {
 	}
 	
 	public void runExperimentForExercise4() throws NumberFormatException, ParseException, IOException {
-		String[] problemNameList = {"wil100", "esc16e", "lipa40b"};
+		String[] problemNameList = {"esc16e", "lipa40b", "wil100"};
 		
 		AbstractAlgorithm greedy = new GreedyAlgorithm();
 		AbstractAlgorithm steepest = new SteepestAlgorithm();
@@ -128,9 +128,11 @@ public class ExperimentRunner {
 			for(AlgorithmResult algoritmResult : greedyResults){
 				ex4ExperimentSaver.addExperimentResult(problemName, algoritmResult);
 			}
+			ex4ExperimentSaver.nextAlgoritm();
 			for(AlgorithmResult algoritmResult : steepestResults){
 				ex4ExperimentSaver.addExperimentResult(problemName, algoritmResult);
 			}
+			ex4ExperimentSaver.nextAlgoritm();
 		}
 		ex4ExperimentSaver.saveFile("results/exercise4.csv");
 	}

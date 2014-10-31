@@ -20,14 +20,14 @@ import edu.mioib.qaplocalsearch.parser.SolutionParser;
 
 public class Ex4ExperimentSaver {
 	List<String[]> results;
-	int exceutionCounter = 0;
-	int currentMinValue = Integer.MAX_VALUE;
-	int valueSum = 0;
+	int exceutionCounter;
+	int currentMinValue;
+	int valueSum;
 	
 	public Ex4ExperimentSaver() {
 		results = new ArrayList<String[]>();
 		
-		String[] columnsNames = new String[9];
+		String[] columnsNames = new String[8];
 		columnsNames[0] = "Algorithm Name";
 		columnsNames[1] = "Problem File Name";
 		columnsNames[2] = "Problem Size";
@@ -38,12 +38,16 @@ public class Ex4ExperimentSaver {
 		columnsNames[7] = "Execution Number";
 		
 		results.add(columnsNames);
+		
+		exceutionCounter = 0;
+		currentMinValue = Integer.MAX_VALUE;
+		valueSum = 0;
 	}
 
 	public void addExperimentResult(String problemName, AlgorithmResult algorithmResult) throws FileNotFoundException, IOException, NumberFormatException, ParseException {
 		int[] localisationsOrder = algorithmResult.getSolution().getState();
 		int localisationsSize = localisationsOrder.length;
-		String[] result = new String[6];
+		String[] result = new String[8];
 		
 		int evaluation = algorithmResult.getSolution().getEvaluation();
 		valueSum += evaluation;
@@ -61,7 +65,8 @@ public class Ex4ExperimentSaver {
 		result[3] = Integer.toString(evaluation);
 		result[4] = Integer.toString(algorithmResult.getSolution().getEvaluation() - solution.getEvaluation());
 		result[5] = Integer.toString(currentMinValue);
-		result[6] = Integer.toString((int)(valueSum/exceutionCounter));
+		int currAverage = valueSum/exceutionCounter;
+		result[6] = Integer.toString(currAverage);
 		result[7] = Integer.toString(exceutionCounter);
 		
 		results.add(result);
@@ -79,7 +84,7 @@ public class Ex4ExperimentSaver {
 			for(String[] result: results){
 				for(int i=0; i<result.length ;i++){
 					writer.write(result[i]);
-					if(i<result.length-2){
+					if(i<(result.length-1)){
 						writer.write(";");
 					}
 				}
@@ -94,17 +99,10 @@ public class Ex4ExperimentSaver {
 			System.exit( 1 );
 		}
 	}
-	
-	public int getSolutionValue(InputStream inputStream) throws IOException {
-		try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
-			StringBuilder contentBuilder = new StringBuilder();
-			String line = null;
-			if((line = bufferedReader.readLine()) != null) {
-				contentBuilder.append(line);
-			}
-			String[] solutionParts = contentBuilder.toString().trim().split("\\s+");
-			
-			return Integer.parseInt(solutionParts[1]);
-		}
+
+	public void nextAlgoritm() {
+		exceutionCounter = 0;
+		currentMinValue = Integer.MAX_VALUE;
+		valueSum = 0;
 	}
 }
