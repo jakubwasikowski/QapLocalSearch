@@ -30,35 +30,40 @@ public class ExperimentRunner {
 	}
 
 	public void runExperimentForExercise3() throws NumberFormatException, ParseException, IOException {
-		Problem problem = parseProblemFileFromResource("/lipa90b.dat");
+		String[] problemNameList = { "bur26g", "esc16e", "lipa40b", "nug18", "sko100a", "tai80a", "wil100", "kra30a",
+				"sko81", "chr12a", "scr20", "had12", "tai40b", "lipa90b" };
+		for (String problemName : problemNameList) {
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + problemName);
+			Problem problem = parseProblemFileFromResource("/" + problemName + ".dat");
 
-		AbstractAlgorithm greedy = new GreedyAlgorithm();
-		AbstractAlgorithm steepest = new SteepestAlgorithm();
-		
-		Evaluator evaluator = new QapEvaluator(problem);
-		AlgorithmRunSettings settings = new AlgorithmRunSettings(100, Long.MAX_VALUE);
-		
-		List<AlgorithmResult> greedyResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), greedy, evaluator,
-				settings);
-		List<AlgorithmResult> steepestResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), steepest,
-				evaluator, settings);
+			AbstractAlgorithm greedy = new GreedyAlgorithm();
+			AbstractAlgorithm steepest = new SteepestAlgorithm();
 
-		List<String> columnsNames = Lists.newArrayList("greedy - jakość rozwiązania początkowego",
-				"greedy - jakość rozwiązania końcowego", "steepest - jakość rozwiązania początkowego",
-				"steepest - jakość rozwiązania końcowego");
+			Evaluator evaluator = new QapEvaluator(problem);
+			AlgorithmRunSettings settings = new AlgorithmRunSettings(200, Long.MAX_VALUE);
 
-		List<List<String>> valueRows = Lists.newArrayListWithCapacity(greedyResults.size());
-		for (int i = 0; i < greedyResults.size(); i++) {
-			int greedyInitialEvaluation = greedyResults.get(i).getInitialState().getEvaluation();
-			int greedySolutionEvaluation = greedyResults.get(i).getSolution().getEvaluation();
-			int steepestInitialEvaluation = steepestResults.get(i).getInitialState().getEvaluation();
-			int steepestSolutionEvaluation = steepestResults.get(i).getSolution().getEvaluation();
-			valueRows.add(Lists.newArrayList(Integer.toString(greedyInitialEvaluation),
-					Integer.toString(greedySolutionEvaluation), Integer.toString(steepestInitialEvaluation),
-					Integer.toString(steepestSolutionEvaluation)));
+			List<AlgorithmResult> greedyResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), greedy,
+					evaluator, settings);
+			List<AlgorithmResult> steepestResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), steepest,
+					evaluator, settings);
+
+			List<String> columnsNames = Lists.newArrayList("greedy - jakość rozwiązania początkowego",
+					"greedy - jakość rozwiązania końcowego", "steepest - jakość rozwiązania początkowego",
+					"steepest - jakość rozwiązania końcowego");
+
+			List<List<String>> valueRows = Lists.newArrayListWithCapacity(greedyResults.size());
+			for (int i = 0; i < greedyResults.size(); i++) {
+				int greedyInitialEvaluation = greedyResults.get(i).getInitialState().getEvaluation();
+				int greedySolutionEvaluation = greedyResults.get(i).getSolution().getEvaluation();
+				int steepestInitialEvaluation = steepestResults.get(i).getInitialState().getEvaluation();
+				int steepestSolutionEvaluation = steepestResults.get(i).getSolution().getEvaluation();
+				valueRows.add(Lists.newArrayList(Integer.toString(greedyInitialEvaluation),
+						Integer.toString(greedySolutionEvaluation), Integer.toString(steepestInitialEvaluation),
+						Integer.toString(steepestSolutionEvaluation)));
+			}
+
+			GenericExperimentSaver.save("results/exercise3_" + problemName + ".csv", columnsNames, valueRows);
 		}
-
-		GenericExperimentSaver.save("results/exercise3.csv", columnsNames, valueRows);
 	}
 
 	
