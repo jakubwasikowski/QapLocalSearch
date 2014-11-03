@@ -75,7 +75,7 @@ public class ExperimentRunner {
 		for(String problemName : problemNameList){
 			Problem problem = parseProblemFileFromResource("/"+problemName+".dat");
 			Evaluator evaluator = new QapEvaluator(problem);
-			AlgorithmRunSettings settings = new AlgorithmRunSettings(15, 1000000);
+			AlgorithmRunSettings settings = new AlgorithmRunSettings(15, Long.MAX_VALUE);
 			List<AlgorithmResult> greedyResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), greedy, evaluator,
 					settings);
 			List<AlgorithmResult> steepestResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), steepest,
@@ -119,7 +119,7 @@ public class ExperimentRunner {
 		for(String problemName : problemNameList){
 			Problem problem = parseProblemFileFromResource("/"+problemName+".dat");
 			Evaluator evaluator = new QapEvaluator(problem);
-			AlgorithmRunSettings settings = new AlgorithmRunSettings(400, 1000000);
+			AlgorithmRunSettings settings = new AlgorithmRunSettings(400, Long.MAX_VALUE);
 			List<AlgorithmResult> greedyResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), greedy, evaluator,
 					settings);
 			List<AlgorithmResult> steepestResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), steepest,

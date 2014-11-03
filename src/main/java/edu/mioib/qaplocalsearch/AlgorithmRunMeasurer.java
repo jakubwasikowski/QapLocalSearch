@@ -33,7 +33,7 @@ public class AlgorithmRunMeasurer {
 			throw new IllegalStateException();
 		}
 		long timeInterval = nanoTime() - startTime;
-		return (timeInterval / 1000000000) < settings.getMaxExecutionSecTime();
+		return timeInterval < settings.getMaxExecutionNanoSecTime();
 	}
 
 	public long stopMeasuring() {
@@ -43,6 +43,6 @@ public class AlgorithmRunMeasurer {
 		long result = nanoTime() - lastTime;
 		lastTime = null;
 
-		return result/1000000000;
+		return result;
 	}
 }
