@@ -88,7 +88,7 @@ public class ExperimentRunner {
 			List<AlgorithmResult> simpleHeuristicResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), simpleHeuristic,
 					evaluator, settings);
 			
-			int timeExecutionForRandom = 0;
+			long timeExecutionForRandom = 0;
 			for(AlgorithmResult algoritmResult : greedyResults){
 				timeExecutionForRandom += algoritmResult.getExecutionReport().getExecutionTime();
 				ex2ExperimentSaver.addExperimentResult(problemName, algoritmResult);
