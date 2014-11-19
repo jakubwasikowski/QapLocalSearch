@@ -11,7 +11,8 @@ import edu.mioib.qaplocalsearch.algorithm.neighboursgenerator.TwoOptStateHolder;
 public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 
 	double startTemperature;
-	double coolingRate;
+	double coolingRate = 0.9;
+	int iterationCounter = 10;
 
 	@Override
 	public int[] resolveProblem(int[] startState, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
@@ -24,7 +25,8 @@ public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 
 		TwoOptStateHolder neighbourIterator;
 		double temperature = startTemperature;
-		while (temperature > 1 && !checkIfInterrupt(measurer)) {
+		double counter = iterationCounter;
+		while (temperature > 1 && counter>0/*!checkIfInterrupt(measurer)*/) {
 			neighbourIterator = new TwoOptStateHolder(currentState);
 			
 			int randomNum = rand.nextInt(neighbourIterator.getNeighboursNumber());
@@ -43,7 +45,8 @@ public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 				bestEvaluation = currentEvaluation;
 			}
 			
-			temperature *= 1 - coolingRate;
+			temperature *= coolingRate;
+			counter--;
 
 			measurer.recordStep();
 		}
