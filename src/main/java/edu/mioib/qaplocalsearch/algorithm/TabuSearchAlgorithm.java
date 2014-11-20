@@ -17,14 +17,11 @@ import edu.mioib.qaplocalsearch.helper.ArraysUtil;
 @Value
 @EqualsAndHashCode(callSuper = false)
 public class TabuSearchAlgorithm extends AbstractAlgorithm {
-
-	int tabuSize;
-	int eliteCandidatesNumber;
-	int pValue = 10;
-
 	@Override
 	public int[] resolveProblem(int[] startState, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
 		int problemSize = startState.length;
+		int tabuSize = problemSize / 4;
+		int eliteCandidatesNumber = problemSize / 10;
 		long[][] tabu = new long[problemSize][problemSize];
 		
 		long currentIteration = 0;
@@ -38,9 +35,9 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 		List<Move> candidates = null;
 		
 		while (!checkIfInterrupt(measurer)
-				&& (currentIteration - lastIterationWithImprovement) < (markowChainLength * pValue)) {
+				&& (currentIteration - lastIterationWithImprovement) < (markowChainLength * 10)) {
 			if (candidates == null) {
-				candidates = generateCandidates(currentState, evaluator);
+				candidates = generateCandidates(currentState, evaluator, eliteCandidatesNumber);
 			}
 
 			Move minTabuCandIndex = null;
@@ -49,7 +46,7 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 				int currCandIdx1 = cand.getIdx1();
 				int currCandIdx2 = cand.getIdx2();
 				if (cand.getEval() < bestEval
-						|| !constainsMoveInTabu(tabu, currentIteration, currCandIdx1, currCandIdx2)) {
+						|| !constainsMoveInTabu(tabu, tabuSize, currentIteration, currCandIdx1, currCandIdx2)) {
 					ArraysUtil.swap(currentState, currCandIdx1, currCandIdx2);
 					chosenMove = cand;
 					break;
@@ -85,7 +82,7 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 		return bestState;
 	}
 
-	private List<Move> generateCandidates(int[] currentState, Evaluator evaluator) {
+	private List<Move> generateCandidates(int[] currentState, Evaluator evaluator, int eliteCandidatesNumber) {
 		List<Move> candidates = Lists.newArrayList();
 
 		TwoOptStateHolder neighbourIterator = new TwoOptStateHolder(currentState);
@@ -110,7 +107,7 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 		tabu[idx1][idx2] = currentIteration;
 	}
 
-	private boolean constainsMoveInTabu(long[][] tabu, long currentIteration, int idx1, int idx2) {
+	private boolean constainsMoveInTabu(long[][] tabu, int tabuSize, long currentIteration, int idx1, int idx2) {
 		return tabu[idx1][idx2] + tabuSize > currentIteration;
 	}
 

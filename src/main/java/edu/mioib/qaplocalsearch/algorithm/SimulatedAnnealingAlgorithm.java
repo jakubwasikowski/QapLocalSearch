@@ -2,17 +2,25 @@ package edu.mioib.qaplocalsearch.algorithm;
 
 import java.util.Random;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 import edu.mioib.qaplocalsearch.AlgorithmRunMeasurer;
 import edu.mioib.qaplocalsearch.Evaluator;
 import edu.mioib.qaplocalsearch.algorithm.neighboursgenerator.TwoOptStateHolder;
 
 @Value
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 
 	double startTemperature;
-	double coolingRate = 0.9;
-	int iterationCounter = 10;
+	double coolingRate;
+	int iterationCounter;
+
+	public SimulatedAnnealingAlgorithm(double startTemperature) {
+		this(startTemperature, 0.9, 10);
+	}
 
 	@Override
 	public int[] resolveProblem(int[] startState, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
