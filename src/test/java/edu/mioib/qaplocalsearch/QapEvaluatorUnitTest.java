@@ -24,8 +24,8 @@ public class QapEvaluatorUnitTest {
 			ParseException {
 		ExperimentResult expResult = getExperimentResult("/bur26a.dat", "/bur26a.sln");
 		evaluator = new QapEvaluator(expResult.getProblem());
-		int eval = evaluator.evaluateState(expResult.getSolution().getState());
-		int expectedEval = expResult.getSolution().getEvaluation();
+		long eval = evaluator.evaluateState(expResult.getSolution().getState());
+		long expectedEval = expResult.getSolution().getEvaluation();
 		assertEquals(expectedEval, eval);
 	}
 
@@ -33,8 +33,8 @@ public class QapEvaluatorUnitTest {
 	public void shouldReturnEvalTheSameAsInTheSolutionOfchr12a() throws ParseException, IOException {
 		ExperimentResult expResult = getExperimentResult("/chr12a.dat", "/chr12a.sln");
 		evaluator = new QapEvaluator(expResult.getProblem());
-		int eval = evaluator.evaluateState(expResult.getSolution().getState());
-		int expectedEval = expResult.getSolution().getEvaluation();
+		long eval = evaluator.evaluateState(expResult.getSolution().getState());
+		long expectedEval = expResult.getSolution().getEvaluation();
 		assertEquals(expectedEval, eval);
 	}
 
@@ -43,8 +43,8 @@ public class QapEvaluatorUnitTest {
 			ParseException {
 		ExperimentResult expResult = getExperimentResult("/had12.dat", "/had12.sln");
 		evaluator = new QapEvaluator(expResult.getProblem());
-		int eval = evaluator.evaluateState(expResult.getSolution().getState());
-		int expectedEval = expResult.getSolution().getEvaluation();
+		long eval = evaluator.evaluateState(expResult.getSolution().getState());
+		long expectedEval = expResult.getSolution().getEvaluation();
 		assertEquals(expectedEval, eval);
 	}
 
@@ -53,8 +53,8 @@ public class QapEvaluatorUnitTest {
 			ParseException {
 		ExperimentResult expResult = getExperimentResult("/lipa90b.dat", "/lipa90b.sln");
 		evaluator = new QapEvaluator(expResult.getProblem());
-		int eval = evaluator.evaluateState(expResult.getSolution().getState());
-		int expectedEval = expResult.getSolution().getEvaluation();
+		long eval = evaluator.evaluateState(expResult.getSolution().getState());
+		long expectedEval = expResult.getSolution().getEvaluation();
 		assertEquals(expectedEval, eval);
 	}
 
@@ -63,8 +63,8 @@ public class QapEvaluatorUnitTest {
 			ParseException {
 		ExperimentResult expResult = getExperimentResult("/scr20.dat", "/scr20.sln");
 		evaluator = new QapEvaluator(expResult.getProblem());
-		int eval = evaluator.evaluateState(expResult.getSolution().getState());
-		int expectedEval = expResult.getSolution().getEvaluation();
+		long eval = evaluator.evaluateState(expResult.getSolution().getState());
+		long expectedEval = expResult.getSolution().getEvaluation();
 		assertEquals(expectedEval, eval);
 	}
 
@@ -73,8 +73,8 @@ public class QapEvaluatorUnitTest {
 			ParseException {
 		ExperimentResult expResult = getExperimentResult("/sko100a.dat", "/sko100a.sln");
 		evaluator = new QapEvaluator(expResult.getProblem());
-		int eval = evaluator.evaluateState(expResult.getSolution().getState());
-		int expectedEval = expResult.getSolution().getEvaluation();
+		long eval = evaluator.evaluateState(expResult.getSolution().getState());
+		long expectedEval = expResult.getSolution().getEvaluation();
 		assertEquals(expectedEval, eval);
 	}
 
@@ -83,8 +83,8 @@ public class QapEvaluatorUnitTest {
 			ParseException {
 		ExperimentResult expResult = getExperimentResult("/tai40b.dat", "/tai40b.sln");
 		evaluator = new QapEvaluator(expResult.getProblem());
-		int eval = evaluator.evaluateState(expResult.getSolution().getState());
-		int expectedEval = expResult.getSolution().getEvaluation();
+		long eval = evaluator.evaluateState(expResult.getSolution().getState());
+		long expectedEval = expResult.getSolution().getEvaluation();
 		assertEquals(expectedEval, eval);
 	}
 
@@ -93,8 +93,8 @@ public class QapEvaluatorUnitTest {
 			ParseException {
 		ExperimentResult expResult = getExperimentResult("/wil100.dat", "/wil100.sln");
 		evaluator = new QapEvaluator(expResult.getProblem());
-		int eval = evaluator.evaluateState(expResult.getSolution().getState());
-		int expectedEval = expResult.getSolution().getEvaluation();
+		long eval = evaluator.evaluateState(expResult.getSolution().getState());
+		long expectedEval = expResult.getSolution().getEvaluation();
 		assertEquals(expectedEval, eval);
 	}
 

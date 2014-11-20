@@ -14,7 +14,9 @@ import edu.mioib.qaplocalsearch.algorithm.AbstractAlgorithm;
 import edu.mioib.qaplocalsearch.algorithm.GreedyAlgorithm;
 import edu.mioib.qaplocalsearch.algorithm.RandomAlgorithm;
 import edu.mioib.qaplocalsearch.algorithm.SimpleHeuristicAlgorithm;
+import edu.mioib.qaplocalsearch.algorithm.SimulatedAnnealingAlgorithm;
 import edu.mioib.qaplocalsearch.algorithm.SteepestAlgorithm;
+import edu.mioib.qaplocalsearch.algorithm.TabuSearchAlgorithm;
 import edu.mioib.qaplocalsearch.model.AlgorithmResult;
 import edu.mioib.qaplocalsearch.model.Problem;
 import edu.mioib.qaplocalsearch.model.StateEvaluation;
@@ -79,6 +81,8 @@ public class ExperimentRunner {
 		AbstractAlgorithm steepest = new SteepestAlgorithm();
 		AbstractAlgorithm random = new RandomAlgorithm();
 		AbstractAlgorithm simpleHeuristic = new SimpleHeuristicAlgorithm();
+		AbstractAlgorithm simulatedAnnealing = new SimulatedAnnealingAlgorithm(100); //FIXME test value
+		AbstractAlgorithm tabuSearch = new TabuSearchAlgorithm();
 		
 		Ex2ExperimentSaver ex2ExperimentSaver = new Ex2ExperimentSaver();
 		
@@ -93,6 +97,10 @@ public class ExperimentRunner {
 					evaluator, settings);
 			List<AlgorithmResult> simpleHeuristicResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), simpleHeuristic,
 					evaluator, settings);
+			List<AlgorithmResult> simulatedAnnealingResults = algorithmRunner.runAlgorithm(problem.getProblemSize(),
+					simulatedAnnealing, evaluator, settings);
+			List<AlgorithmResult> tabuSearchResults = algorithmRunner.runAlgorithm(problem.getProblemSize(),
+					tabuSearch, evaluator, settings);
 			
 			long timeExecutionForRandom = 0;
 			for(AlgorithmResult algoritmResult : greedyResults){
@@ -108,6 +116,13 @@ public class ExperimentRunner {
 			}
 			timeExecutionForRandom /= (greedyResults.size()+steepestResults.size());
 			
+			for (AlgorithmResult algoritmResult : simulatedAnnealingResults) {
+				ex2ExperimentSaver.addExperimentResult(problemName, algoritmResult);
+			}
+			for (AlgorithmResult algoritmResult : tabuSearchResults) {
+				ex2ExperimentSaver.addExperimentResult(problemName, algoritmResult);
+			}
+
 			AlgorithmRunSettings randomSettings = new AlgorithmRunSettings(15, timeExecutionForRandom);
 			List<AlgorithmResult> randomResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), random,
 					evaluator, randomSettings);
