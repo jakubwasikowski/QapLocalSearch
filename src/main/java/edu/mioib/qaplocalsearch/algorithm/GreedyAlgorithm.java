@@ -9,7 +9,7 @@ public class GreedyAlgorithm extends AbstractAlgorithm {
 	@Override
 	public int[] resolveProblem(int[] startState, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
 		int[] currentState = startState;
-		int currentEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
+		long currentEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
 		boolean currentStateChanged;
 
 		TwoOptStateHolder neighbourIterator;
@@ -18,7 +18,7 @@ public class GreedyAlgorithm extends AbstractAlgorithm {
 			currentStateChanged = false;
 			while (neighbourIterator.hasNextNeighbour()) {
 				neighbourIterator.nextNeighbour();
-				int newStateEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
+				long newStateEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
 				if (newStateEvaluation < currentEvaluation) {
 					neighbourIterator.saveCurrentNeighbourAsTheBest();
 					neighbourIterator.switchToTheBestNeighbour();

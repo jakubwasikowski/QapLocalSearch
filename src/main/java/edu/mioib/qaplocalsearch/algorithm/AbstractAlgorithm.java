@@ -17,9 +17,9 @@ public abstract class AbstractAlgorithm {
 		return false;
 	}
 
-	protected int evaluateStateAndRecordEvaluation(Evaluator evaluator, AlgorithmRunMeasurer measurer,
+	protected long evaluateStateAndRecordEvaluation(Evaluator evaluator, AlgorithmRunMeasurer measurer,
 			int[] currentState) {
-		int currentEvaluation = evaluator.evaluateState(currentState);
+		long currentEvaluation = evaluator.evaluateState(currentState);
 		measurer.recordEvaluatedState();
 		return currentEvaluation;
 	}

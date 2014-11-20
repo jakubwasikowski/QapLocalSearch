@@ -11,27 +11,29 @@ import edu.mioib.qaplocalsearch.algorithm.neighboursgenerator.TwoOptStateHolder;
 public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 
 	double startTemperature;
-	double coolingRate;
+	double coolingRate = 0.9;
+	int iterationCounter = 10;
 
 	@Override
 	public int[] resolveProblem(int[] startState, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
 		Random rand = new Random();
 		int[] currentState = startState;
-		int currentEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
+		long currentEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
 
-		int bestEvaluation = currentEvaluation;
+		long bestEvaluation = currentEvaluation;
 		int[] best = currentState.clone();
 
 		TwoOptStateHolder neighbourIterator;
 		double temperature = startTemperature;
-		while (temperature > 1 && !checkIfInterrupt(measurer)) {
+		double counter = iterationCounter;
+		while (temperature > 1 && counter>0/*!checkIfInterrupt(measurer)*/) {
 			neighbourIterator = new TwoOptStateHolder(currentState);
 			
 			int randomNum = rand.nextInt(neighbourIterator.getNeighboursNumber());
 			for (int i = 0; i < randomNum; i++) {
 				neighbourIterator.nextNeighbour();
 			}
-			int newEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
+			long newEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
 
 			if (!(acceptanceProbability(currentEvaluation, newEvaluation, temperature) > Math.random())) {
 				neighbourIterator.switchToOriginalState();
@@ -43,7 +45,8 @@ public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 				bestEvaluation = currentEvaluation;
 			}
 			
-			temperature *= 1 - coolingRate;
+			temperature *= coolingRate;
+			counter--;
 
 			measurer.recordStep();
 		}
@@ -55,7 +58,7 @@ public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 		return "Simulated Anneling";
 	}
 
-	private double acceptanceProbability(int currentEval, int newEval, double temperature) {
+	private double acceptanceProbability(long currentEval, long newEval, double temperature) {
 		if (newEval < currentEval) {
 			return 1.0;
 		}

@@ -32,11 +32,11 @@ public class SimpleHeuristicAlgorithm extends AbstractAlgorithm {
 		measurer.recordStep();
 
 		for (; currentResultIdx < permSize; currentResultIdx++) {
-			int bestEval = Integer.MAX_VALUE;
+			long bestEval = Long.MAX_VALUE;
 			int bestAvailableIdx = -1;
 			for (int i = 0; i <= lastAvailableValueIndex; i++) {
 				state[currentResultIdx] = availableValues[i];
-				int stateEval = evaluator.evaluateStatePartially(state, 0, currentResultIdx);
+				long stateEval = evaluator.evaluateStatePartially(state, 0, currentResultIdx);
 				measurer.recordEvaluatedState();
 				if (stateEval < bestEval) {
 					bestAvailableIdx = i;

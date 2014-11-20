@@ -10,11 +10,11 @@ public class RandomAlgorithm extends AbstractAlgorithm {
 	public int[] resolveProblem(int[] startState, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
 		int[] currentState = startState;
 		int[] bestState = currentState;
-		int bestEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
+		long bestEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
 
 		while (!checkIfInterrupt(measurer)) {
 			int[] genState = ArraysUtil.generateRandomPerm(currentState.length);
-			int genStateEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, genState);
+			long genStateEvaluation = evaluateStateAndRecordEvaluation(evaluator, measurer, genState);
 
 			if (genStateEvaluation < bestEvaluation) {
 				bestEvaluation = genStateEvaluation;

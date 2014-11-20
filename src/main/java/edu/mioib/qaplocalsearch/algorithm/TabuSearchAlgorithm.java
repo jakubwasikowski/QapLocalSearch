@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 import edu.mioib.qaplocalsearch.AlgorithmRunMeasurer;
 import edu.mioib.qaplocalsearch.Evaluator;
 import edu.mioib.qaplocalsearch.algorithm.neighboursgenerator.TwoOptStateHolder;
+import edu.mioib.qaplocalsearch.helper.ArraysUtil;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
@@ -23,31 +24,66 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 	@Override
 	public int[] resolveProblem(int[] startState, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
 		int problemSize = startState.length;
+		long[][] tabu = new long[problemSize][problemSize];
+		
+		long currentIteration = 0;
+		
 		int[] currentState = startState;
-		int[][] tabu = new int[problemSize][problemSize];
-		int currentIteration = 0;
+		int[] bestState = currentState.clone();
+		long bestEval = evaluator.evaluateState(currentState);
 
 		while (!checkIfInterrupt(measurer) /* TODO zajebistszy warunek stopu */) {
-			List<Move> candidates = generateCandidates(currentState, evaluator, tabu, currentIteration);
+			List<Move> candidates = generateCandidates(currentState, evaluator);
 
-			for (Move candidate : candidates) {
+			Move minTabuCandIndex = null;
+			Move chosenMove = null;
+			for (Move cand : candidates) {
+				int currCandIdx1 = cand.getIdx1();
+				int currCandIdx2 = cand.getIdx2();
+				if (cand.getEval() < bestEval
+						|| !constainsMoveInTabu(tabu, currentIteration, currCandIdx1, currCandIdx2)) {
+					ArraysUtil.swap(currentState, currCandIdx1, currCandIdx2);
+					chosenMove = cand;
+					break;
+				}
 
+				int minTabuValueCandIdx1 = minTabuCandIndex.getIdx1();
+				int minTabuValueCandIdx2 = minTabuCandIndex.getIdx2();
+				if (minTabuCandIndex != null
+						&& tabu[currCandIdx1][currCandIdx2] < tabu[minTabuValueCandIdx1][minTabuValueCandIdx2]) {
+					minTabuCandIndex = cand;
+				}
 			}
+
+			if (chosenMove == null) {
+				ArraysUtil.swap(currentState, minTabuCandIndex.getIdx1(), minTabuCandIndex.getIdx2());
+				chosenMove = minTabuCandIndex;
+			}
+
+			addMoveToTabu(tabu, currentIteration, chosenMove.getIdx1(), chosenMove.getIdx2());
+
+			long currentStateEval = evaluator.evaluateState(currentState);
+			if (currentStateEval < bestEval) {
+				bestState = currentState.clone();
+				bestEval = currentStateEval;
+			}
+
+			currentIteration++;
 		}
+		
+		return bestState;
 	}
 
-	private List<Move> generateCandidates(int[] currentState, Evaluator evaluator, int[][] tabu, int currentIteration) {
+	private List<Move> generateCandidates(int[] currentState, Evaluator evaluator) {
 		List<Move> candidates = Lists.newArrayList();
-		
+
 		TwoOptStateHolder neighbourIterator = new TwoOptStateHolder(currentState);
 		while (neighbourIterator.hasNextNeighbour()) {
 			neighbourIterator.nextNeighbour();
 			int idx1 = neighbourIterator.getIdx1();
 			int idx2 = neighbourIterator.getIdx2();
-			if (!constainsTabuMove(tabu, currentIteration, idx1, idx2)) {
-				int stateEval = evaluator.evaluateState(currentState);
-				candidates.add(new Move(idx1, idx2, stateEval));
-			}
+			long stateEval = evaluator.evaluateState(currentState);
+			candidates.add(new Move(idx1, idx2, stateEval));
 		}
 		neighbourIterator.switchToOriginalState();
 
@@ -59,11 +95,11 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 		return "Tabu search";
 	}
 
-	private void addMoveToTabu(int[][] tabu, int currentIteration, int idx1, int idx2) {
+	private void addMoveToTabu(long[][] tabu, long currentIteration, int idx1, int idx2) {
 		tabu[idx1][idx2] = currentIteration;
 	}
 
-	private boolean constainsTabuMove(int[][] tabu, int currentIteration, int idx1, int idx2) {
+	private boolean constainsMoveInTabu(long[][] tabu, long currentIteration, int idx1, int idx2) {
 		return tabu[idx1][idx2] + tabuSize > currentIteration;
 	}
 
@@ -71,14 +107,21 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 	private static class Move {
 		int idx1;
 		int idx2;
-		int eval;
+		long eval;
 	}
 
 	private static class MoveComparator implements Comparator<Move> {
 
 		@Override
 		public int compare(Move move1, Move move2) {
-			return move1.eval - move2.eval;
+			if (move1.eval < move2.eval) {
+				return -1;
+			}
+			if (move1.eval > move2.eval) {
+				return 1;
+			}
+
+			return 0;
 		}
 
 	}

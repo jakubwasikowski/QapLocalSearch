@@ -1,23 +1,16 @@
 package edu.mioib.qaplocalsearch.saver;
 
-import static edu.mioib.qaplocalsearch.parser.ProblemParser.parseProblemFileFromResource;
-
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParseException;
 
 import edu.mioib.qaplocalsearch.model.AlgorithmResult;
-import edu.mioib.qaplocalsearch.model.Problem;
 import edu.mioib.qaplocalsearch.model.StateEvaluation;
 import edu.mioib.qaplocalsearch.parser.SolutionParser;
 
@@ -52,8 +45,8 @@ public class Ex2ExperimentSaver {
 		result[0] = algorithmResult.getAlgorithmName();
 		result[1] = problemName;
 		result[2] = String.valueOf(localisationsSize);
-		result[3] = Integer.toString(algorithmResult.getSolution().getEvaluation());
-		result[4] = Integer.toString(algorithmResult.getSolution().getEvaluation() - solution.getEvaluation());
+		result[3] = Long.toString(algorithmResult.getSolution().getEvaluation());
+		result[4] = Long.toString(algorithmResult.getSolution().getEvaluation() - solution.getEvaluation());
 		result[5] = Long.toString(algorithmResult.getExecutionReport().getExecutionTime());
 		result[6] = Integer.toString(algorithmResult.getExecutionReport().getEvaluatedStatesNumber());
 		result[7] = Integer.toString(algorithmResult.getExecutionReport().getStepsNumber());

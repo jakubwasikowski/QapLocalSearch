@@ -1,14 +1,10 @@
 package edu.mioib.qaplocalsearch.saver;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +17,7 @@ import edu.mioib.qaplocalsearch.parser.SolutionParser;
 public class Ex4ExperimentSaver {
 	List<String[]> results;
 	int exceutionCounter;
-	int currentMinValue;
+	long currentMinValue;
 	int valueSum;
 	
 	public Ex4ExperimentSaver() {
@@ -49,7 +45,7 @@ public class Ex4ExperimentSaver {
 		int localisationsSize = localisationsOrder.length;
 		String[] result = new String[8];
 		
-		int evaluation = algorithmResult.getSolution().getEvaluation();
+		long evaluation = algorithmResult.getSolution().getEvaluation();
 		valueSum += evaluation;
 		if(evaluation<currentMinValue){
 			currentMinValue = evaluation;
@@ -62,9 +58,9 @@ public class Ex4ExperimentSaver {
 		result[0] = algorithmResult.getAlgorithmName();
 		result[1] = problemName;
 		result[2] = String.valueOf(localisationsSize);
-		result[3] = Integer.toString(evaluation);
-		result[4] = Integer.toString(algorithmResult.getSolution().getEvaluation() - solution.getEvaluation());
-		result[5] = Integer.toString(currentMinValue);
+		result[3] = Long.toString(evaluation);
+		result[4] = Long.toString(algorithmResult.getSolution().getEvaluation() - solution.getEvaluation());
+		result[5] = Long.toString(currentMinValue);
 		int currAverage = valueSum/exceutionCounter;
 		result[6] = Integer.toString(currAverage);
 		result[7] = Integer.toString(exceutionCounter);
