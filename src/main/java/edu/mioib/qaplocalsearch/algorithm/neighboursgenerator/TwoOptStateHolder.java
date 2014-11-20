@@ -103,4 +103,20 @@ public class TwoOptStateHolder implements StateHolder {
 	public boolean isTheBestExists() {
 		return !(idx1Best == 0 && idx2Best == 0);
 	}
+
+	@Override
+	public int getIdx1() {
+		if (lastGotState != StateType.NEXT_NEIGHBOUR) {
+			throw new IllegalStateException();
+		}
+		return idx1;
+	}
+
+	@Override
+	public int getIdx2() {
+		if (lastGotState != StateType.NEXT_NEIGHBOUR) {
+			throw new IllegalStateException();
+		}
+		return idx2;
+	}
 }

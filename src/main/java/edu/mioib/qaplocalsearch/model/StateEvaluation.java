@@ -4,6 +4,6 @@ import lombok.Value;
 
 @Value
 public class StateEvaluation {
-	int evaluation;
+	long evaluation;
 	int[] state;
 }

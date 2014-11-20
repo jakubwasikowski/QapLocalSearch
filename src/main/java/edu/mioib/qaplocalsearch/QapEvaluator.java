@@ -9,13 +9,13 @@ public class QapEvaluator implements Evaluator {
 	Problem problem;
 
 	@Override
-	public int evaluateState(int[] state) {
+	public long evaluateState(int[] state) {
 		return evaluateStatePartially(state, 0, state.length - 1);
 	}
 
 	@Override
-	public int evaluateStatePartially(int[] state, int startIdx, int endIdx) {
-		int result = 0;
+	public long evaluateStatePartially(int[] state, int startIdx, int endIdx) {
+		long result = 0;
 		int[][] localizations = problem.getLocalizations();
 		int[][] facilities = problem.getFacilities();
 

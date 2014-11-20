@@ -1,8 +1,10 @@
 package edu.mioib.qaplocalsearch;
 
 import static edu.mioib.qaplocalsearch.parser.ProblemParser.parseProblemFileFromResource;
+import static edu.mioib.qaplocalsearch.parser.SolutionParser.parseSolutionFileFromResource;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -15,6 +17,8 @@ import edu.mioib.qaplocalsearch.algorithm.SimpleHeuristicAlgorithm;
 import edu.mioib.qaplocalsearch.algorithm.SteepestAlgorithm;
 import edu.mioib.qaplocalsearch.model.AlgorithmResult;
 import edu.mioib.qaplocalsearch.model.Problem;
+import edu.mioib.qaplocalsearch.model.StateEvaluation;
+import edu.mioib.qaplocalsearch.permutation.DamerauLevenshteinAlgorithm;
 import edu.mioib.qaplocalsearch.saver.Ex2ExperimentSaver;
 import edu.mioib.qaplocalsearch.saver.Ex4ExperimentSaver;
 import edu.mioib.qaplocalsearch.saver.ExperimentSaver;
@@ -140,5 +144,65 @@ public class ExperimentRunner {
 			ex4ExperimentSaver.nextAlgoritm();
 		}
 		ex4ExperimentSaver.saveFile("results/exercise4.csv");
+	}
+
+	public void runExperimentForExercise5() throws NumberFormatException, ParseException, IOException {
+		String[] problemNameList = { "had12", "bur26a", "lipa90b" };
+
+		AbstractAlgorithm greedy = new GreedyAlgorithm();
+		AbstractAlgorithm steepest = new SteepestAlgorithm();
+		AbstractAlgorithm random = new RandomAlgorithm();
+		AbstractAlgorithm heuristic = new SimpleHeuristicAlgorithm();
+
+		for (String problemName : problemNameList) {
+			Problem problem = parseProblemFileFromResource("/" + problemName + ".dat");
+			StateEvaluation solution = parseSolutionFileFromResource("/" + problemName + ".sln");
+
+			Evaluator evaluator = new QapEvaluator(problem);
+			AlgorithmRunSettings settings = new AlgorithmRunSettings(1, Long.MAX_VALUE);
+			List<AlgorithmResult> greedyResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), greedy,
+					evaluator, settings);
+			List<AlgorithmResult> steepestResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), steepest,
+					evaluator, settings);
+			List<AlgorithmResult> heuristicResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), heuristic,
+					evaluator, settings);
+
+			long randomMaxExecutionTime = (greedyResults.get(0).getExecutionReport().getExecutionTime() + steepestResults
+					.get(0).getExecutionReport().getExecutionTime()) / 2;
+			AlgorithmRunSettings randomSettings = new AlgorithmRunSettings(1, randomMaxExecutionTime);
+			List<AlgorithmResult> randomResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), random,
+					evaluator, randomSettings);
+
+			System.out.println("Optimum (ocena " + solution.getEvaluation() + "):");
+			System.out.println(Arrays.toString(solution.getState()));
+
+			System.out.println("Greedy (ocena " + greedyResults.get(0).getSolution().getEvaluation() + "):");
+			System.out.println(Arrays.toString(greedyResults.get(0).getSolution().getState()));
+			System.out.println("Steepest (ocena " + steepestResults.get(0).getSolution().getEvaluation() + "):");
+			System.out.println(Arrays.toString(steepestResults.get(0).getSolution().getState()));
+			System.out.println("Heuristic (ocena " + heuristicResults.get(0).getSolution().getEvaluation() + "):");
+			System.out.println(Arrays.toString(heuristicResults.get(0).getSolution().getState()));
+			System.out.println("Random (ocena " + randomResults.get(0).getSolution().getEvaluation() + "):");
+			System.out.println(Arrays.toString(randomResults.get(0).getSolution().getState()));
+
+			DamerauLevenshteinAlgorithm dl = new DamerauLevenshteinAlgorithm(1, 1, 1, 1);
+			List<Integer> optimumList = stateToIntegerList(solution.getState());
+			System.out.println("Greedy DL: "
+					+ dl.execute(optimumList, stateToIntegerList(greedyResults.get(0).getSolution().getState())));
+			System.out.println("Steepest DL: "
+					+ dl.execute(optimumList, stateToIntegerList(steepestResults.get(0).getSolution().getState())));
+			System.out.println("Heuristic DL: "
+					+ dl.execute(optimumList, stateToIntegerList(heuristicResults.get(0).getSolution().getState())));
+			System.out.println("Random DL: "
+					+ dl.execute(optimumList, stateToIntegerList(randomResults.get(0).getSolution().getState())));
+		}
+	}
+
+	private List<Integer> stateToIntegerList(int[] state) {
+		List<Integer> result = Lists.newArrayListWithCapacity(state.length);
+		for (int value : state) {
+			result.add(value);
+		}
+		return result;
 	}
 }

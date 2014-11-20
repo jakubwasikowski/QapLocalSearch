@@ -2,7 +2,7 @@ package edu.mioib.qaplocalsearch;
 
 
 public interface Evaluator {
-	int evaluateState(int[] state);
+	long evaluateState(int[] state);
 
-	int evaluateStatePartially(int[] state, int startIdx, int endIdx);
+	long evaluateStatePartially(int[] state, int startIdx, int endIdx);
 }

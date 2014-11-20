@@ -15,4 +15,8 @@ public interface StateHolder {
 	void switchToTheBestNeighbour();
 	
 	boolean isTheBestExists();
+
+	int getIdx1();
+
+	int getIdx2();
 }
