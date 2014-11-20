@@ -83,7 +83,7 @@ public class ExTSSAExperimentSaver {
 		result[1] = currentProbName;
 		result[2] = currentProbSize;
 		result[3] = Long.toString(algorithmResult.getSolution().getEvaluation() - solution.getEvaluation());
-		result[4] = Long.toString((algorithmResult.getSolution().getEvaluation() - solution.getEvaluation())/solution.getEvaluation());
+		result[4] = Double.toString(new Double(algorithmResult.getSolution().getEvaluation() - solution.getEvaluation())/solution.getEvaluation());
 		result[5] = Long.toString(algorithmResult.getExecutionReport().getExecutionTime());
 		result[6] = Integer.toString(algorithmResult.getExecutionReport().getEvaluatedStatesNumber());
 
@@ -91,7 +91,7 @@ public class ExTSSAExperimentSaver {
 		
 		resultSum += algorithmResult.getSolution().getEvaluation() - solution.getEvaluation();
 		timeSum += algorithmResult.getExecutionReport().getExecutionTime();
-		measureSum += (algorithmResult.getSolution().getEvaluation() - solution.getEvaluation())/solution.getEvaluation();
+		measureSum += new Double(algorithmResult.getSolution().getEvaluation() - solution.getEvaluation())/solution.getEvaluation();
 		evaluatedStatesSum += algorithmResult.getExecutionReport().getEvaluatedStatesNumber();
 		resultCounter++;
 	}
@@ -125,13 +125,14 @@ public class ExTSSAExperimentSaver {
 	}
 
 	public void saveAverageFile(String path) {
-		String[] averageResult = new String[6];
+		String[] averageResult = new String[7];
 		averageResult[0] = currentAlgName;
 		averageResult[1] = currentProbName;
 		averageResult[2] = currentProbSize;
 		averageResult[3] = new Double(resultSum / resultCounter).toString();
-		averageResult[4] = new Double(timeSum / resultCounter).toString();
-		averageResult[5] = new Double(evaluatedStatesSum / resultCounter).toString();
+		averageResult[4] = new Double(measureSum/resultCounter).toString();
+		averageResult[5] = new Double(timeSum / resultCounter).toString();
+		averageResult[6] = new Double(evaluatedStatesSum / resultCounter).toString();
 
 		avgResults.add(averageResult);
 		
