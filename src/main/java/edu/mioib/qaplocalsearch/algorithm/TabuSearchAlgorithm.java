@@ -20,6 +20,7 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 
 	int tabuSize;
 	int eliteCandidatesNumber;
+	int pValue = 10;
 
 	@Override
 	public int[] resolveProblem(int[] startState, Evaluator evaluator, AlgorithmRunMeasurer measurer) {
@@ -27,13 +28,20 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 		long[][] tabu = new long[problemSize][problemSize];
 		
 		long currentIteration = 0;
+		long lastIterationWithImprovement = 0;
+		int markowChainLength = problemSize * (problemSize - 1);
 		
 		int[] currentState = startState;
 		int[] bestState = currentState.clone();
 		long bestEval = evaluator.evaluateState(currentState);
 
-		while (!checkIfInterrupt(measurer) /* TODO zajebistszy warunek stopu */) {
-			List<Move> candidates = generateCandidates(currentState, evaluator);
+		List<Move> candidates = null;
+		
+		while (!checkIfInterrupt(measurer)
+				&& (currentIteration - lastIterationWithImprovement) < (markowChainLength * pValue)) {
+			if (candidates == null) {
+				candidates = generateCandidates(currentState, evaluator);
+			}
 
 			Move minTabuCandIndex = null;
 			Move chosenMove = null;
@@ -58,6 +66,7 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 			if (chosenMove == null) {
 				ArraysUtil.swap(currentState, minTabuCandIndex.getIdx1(), minTabuCandIndex.getIdx2());
 				chosenMove = minTabuCandIndex;
+				candidates = null;
 			}
 
 			addMoveToTabu(tabu, currentIteration, chosenMove.getIdx1(), chosenMove.getIdx2());
@@ -66,6 +75,8 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 			if (currentStateEval < bestEval) {
 				bestState = currentState.clone();
 				bestEval = currentStateEval;
+				
+				lastIterationWithImprovement = currentIteration;
 			}
 
 			currentIteration++;
