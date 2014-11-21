@@ -27,6 +27,7 @@ import edu.mioib.qaplocalsearch.saver.ExTSSAExperimentSaver;
 import edu.mioib.qaplocalsearch.saver.ExperimentSaver;
 import edu.mioib.qaplocalsearch.saver.GenericExperimentSaver;
 
+//TODO refactor this class
 public class ExperimentRunner {
 	private AlgorithmRunner algorithmRunner;
 	private ExperimentSaver experimentSaver;
@@ -75,9 +76,8 @@ public class ExperimentRunner {
 
 	
 	public void runExperimentForExercise2() throws NumberFormatException, ParseException, IOException {
-		// String[] problemNameList = {"bur26g", "esc16e", "lipa40b", "nug18",
-		// "sko100a", "tai80a", "wil100", "kra30a", "scr12", "sko81"};
-		String[] problemNameList = { "bur26g", "esc16e" };
+		String[] problemNameList = { "bur26g", "esc16e", "lipa40b", "nug18", "sko100a", "tai80a", "wil100", "kra30a",
+				"scr12", "sko81" };
 
 		AbstractAlgorithm greedy = new GreedyAlgorithm();
 		AbstractAlgorithm steepest = new SteepestAlgorithm();
@@ -125,15 +125,12 @@ public class ExperimentRunner {
 				ex2ExperimentSaver.addExperimentResult(problemName, algoritmResult);
 			}
 
-			// AlgorithmRunSettings randomSettings = new
-			// AlgorithmRunSettings(15, timeExecutionForRandom);
-			// List<AlgorithmResult> randomResults =
-			// algorithmRunner.runAlgorithm(problem.getProblemSize(), random,
-			// evaluator, randomSettings);
-			// for(AlgorithmResult algoritmResult : randomResults){
-			// ex2ExperimentSaver.addExperimentResult(problemName,
-			// algoritmResult);
-			// }
+			AlgorithmRunSettings randomSettings = new AlgorithmRunSettings(15, timeExecutionForRandom);
+			List<AlgorithmResult> randomResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), random,
+					evaluator, randomSettings);
+			for (AlgorithmResult algoritmResult : randomResults) {
+				ex2ExperimentSaver.addExperimentResult(problemName, algoritmResult);
+			}
 		}
 		
 		ex2ExperimentSaver.saveFile("results/exercise2.csv");
@@ -230,6 +227,7 @@ public class ExperimentRunner {
 	}
 	
 	public void runExperimentForExerciseTSSA() throws NumberFormatException, ParseException, IOException {
+		final int executionNumber = 15;
 		String[] problemNameList = {"bur26g", /*"esc16e", "lipa40b", "nug18", "sko100a", "tai80a", "wil100", "kra30a", "scr12", */"sko81"};
 
 		AbstractAlgorithm greedy = new GreedyAlgorithm();
@@ -245,7 +243,7 @@ public class ExperimentRunner {
 			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + problemName);
 			Problem problem = parseProblemFileFromResource("/"+problemName+".dat");
 			Evaluator evaluator = new QapEvaluator(problem);
-			AlgorithmRunSettings settings = new AlgorithmRunSettings(15, Long.MAX_VALUE);
+			AlgorithmRunSettings settings = new AlgorithmRunSettings(executionNumber, Long.MAX_VALUE);
 			List<AlgorithmResult> greedyResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), greedy, evaluator,
 					settings);
 			List<AlgorithmResult> steepestResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), steepest,
@@ -267,26 +265,34 @@ public class ExperimentRunner {
 			}
 			timeExecutionForRandom /= (greedyResults.size()+steepestResults.size());
 			
-			AlgorithmRunSettings randomSettings = new AlgorithmRunSettings(15, timeExecutionForRandom);
+			AlgorithmRunSettings randomSettings = new AlgorithmRunSettings(executionNumber, timeExecutionForRandom);
 			List<AlgorithmResult> randomResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), random,
 					evaluator, randomSettings);
 			for(AlgorithmResult algoritmResult : randomResults){
 				exTSSAExperimentSaver.addExperimentResult(problemName, algoritmResult);
 			}
-			/*List<AlgorithmResult> simAnnelResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), simAnneling,
-					evaluator, settings);
-			List<AlgorithmResult> tabuSearchResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), tabuSearch,
-					evaluator, settings);
 			
-			long timeExecutionForRandom = 0;
-			for(AlgorithmResult algoritmResult : simAnnelResults){
-				timeExecutionForRandom += algoritmResult.getExecutionReport().getExecutionTime();
-				exTSSAExperimentSaver.addExperimentResult(problemName, algoritmResult);
-			}
-			for(AlgorithmResult algoritmResult : tabuSearchResults){
-				timeExecutionForRandom += algoritmResult.getExecutionReport().getExecutionTime();
-				exTSSAExperimentSaver.addExperimentResult(problemName, algoritmResult);
-			}*/
+			// List<AlgorithmResult> simAnnelResults =
+			// algorithmRunner.runAlgorithm(problem.getProblemSize(),
+			// simAnneling,
+			// evaluator, settings);
+			// List<AlgorithmResult> tabuSearchResults =
+			// algorithmRunner.runAlgorithm(problem.getProblemSize(),
+			// tabuSearch,
+			// evaluator, settings);
+			//
+			// for(AlgorithmResult algoritmResult : simAnnelResults){
+			// timeExecutionForRandom +=
+			// algoritmResult.getExecutionReport().getExecutionTime();
+			// exTSSAExperimentSaver.addExperimentResult(problemName,
+			// algoritmResult);
+			// }
+			// for(AlgorithmResult algoritmResult : tabuSearchResults){
+			// timeExecutionForRandom +=
+			// algoritmResult.getExecutionReport().getExecutionTime();
+			// exTSSAExperimentSaver.addExperimentResult(problemName,
+			// algoritmResult);
+			// }
 		}
 		
 		exTSSAExperimentSaver.saveFile("results/exerciseTSSA.csv");
