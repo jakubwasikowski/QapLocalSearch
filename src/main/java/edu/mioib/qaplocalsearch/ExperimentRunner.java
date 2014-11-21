@@ -276,15 +276,15 @@ public class ExperimentRunner {
 			
 			List<AlgorithmResult> simAnnelResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), simAnnealing,
 					evaluator, settings);
-			//List<AlgorithmResult> tabuSearchResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), tabuSearch,
-			//		evaluator, settings);
+			List<AlgorithmResult> tabuSearchResults = algorithmRunner.runAlgorithm(problem.getProblemSize(), tabuSearch,
+					evaluator, settings);
 			
 			for(AlgorithmResult algoritmResult : simAnnelResults){
 				exTSSAExperimentSaver.addExperimentResult(problemName, algoritmResult);
 			}
-			/*for(AlgorithmResult algoritmResult : tabuSearchResults){
+			for(AlgorithmResult algoritmResult : tabuSearchResults){
 				exTSSAExperimentSaver.addExperimentResult(problemName, algoritmResult);
-			}*/
+			}
 
 		}
 		
