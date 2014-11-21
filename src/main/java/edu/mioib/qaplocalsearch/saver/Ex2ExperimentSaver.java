@@ -14,6 +14,7 @@ import edu.mioib.qaplocalsearch.model.AlgorithmResult;
 import edu.mioib.qaplocalsearch.model.StateEvaluation;
 import edu.mioib.qaplocalsearch.parser.SolutionParser;
 
+//TODO refactor this class
 public class Ex2ExperimentSaver {
 	List<String[]> results;
 	

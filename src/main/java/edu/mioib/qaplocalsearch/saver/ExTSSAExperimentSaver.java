@@ -2,7 +2,6 @@ package edu.mioib.qaplocalsearch.saver;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ import edu.mioib.qaplocalsearch.model.AlgorithmResult;
 import edu.mioib.qaplocalsearch.model.StateEvaluation;
 import edu.mioib.qaplocalsearch.parser.SolutionParser;
 
+//TODO refactor this class
 public class ExTSSAExperimentSaver {
 	List<String[]> results;
 	List<String[]> avgResults;
@@ -57,7 +57,8 @@ public class ExTSSAExperimentSaver {
 		resultCounter = 0;
 	}
 
-	public void addExperimentResult(String problemName, AlgorithmResult algorithmResult) throws FileNotFoundException, IOException, NumberFormatException, ParseException {
+	public void addExperimentResult(String problemName, AlgorithmResult algorithmResult) throws NumberFormatException,
+			ParseException, IOException {
 		int[] localisationsOrder = algorithmResult.getSolution().getState();
 		int localisationsSize = localisationsOrder.length;
 		String[] result = new String[9];

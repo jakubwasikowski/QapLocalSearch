@@ -9,6 +9,7 @@ import java.util.List;
 
 import edu.mioib.qaplocalsearch.model.AlgorithmResult;
 
+//TODO refactor this class
 public class ExperimentSaver {
 	List<String[]> results;
 	

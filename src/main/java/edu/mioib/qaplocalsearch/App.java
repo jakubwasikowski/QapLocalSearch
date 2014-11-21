@@ -8,6 +8,8 @@ public class App {
 
 	public static void main(String[] args) throws NumberFormatException, ParseException, IOException {
 		ExperimentRunner er = new ExperimentRunner();
+		
+		System.in.read();
 
 		er.runExperimentForExerciseTSSA();
 	}
