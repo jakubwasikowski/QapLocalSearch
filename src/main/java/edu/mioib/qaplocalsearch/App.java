@@ -11,7 +11,7 @@ public class App {
 		
 		System.in.read();
 
-		er.runExperimentForExercise2();
+		er.runExperimentForExerciseTSSA();
 	}
 
 }

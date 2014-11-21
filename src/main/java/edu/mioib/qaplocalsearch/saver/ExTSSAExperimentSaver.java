@@ -21,9 +21,11 @@ public class ExTSSAExperimentSaver {
 	String currentAlgName;
 	String currentProbName;
 	String currentProbSize;
-	double resultSum;
-	long timeSum;
+	long optimum;
+	long valueSum;
+	double distanceSum;
 	double measureSum;
+	long timeSum;
 	double evaluatedStatesSum;
 	int resultCounter;
 	
@@ -31,21 +33,25 @@ public class ExTSSAExperimentSaver {
 		results = new ArrayList<String[]>();
 		avgResults = new ArrayList<String[]>();
 		
-		String[] columnsNames = new String[7];
+		String[] columnsNames = new String[9];
 		columnsNames[0] = "Algorithm Name";
 		columnsNames[1] = "Problem File Name";
 		columnsNames[2] = "Problem Size";
-		columnsNames[3] = "Distance from optimum";
-		columnsNames[4] = "Measure";
-		columnsNames[5] = "Execution Time";
-		columnsNames[6] = "Evaluated states number";
+		columnsNames[3] = "Optimum";
+		columnsNames[4] = "Value";
+		columnsNames[5] = "Distance from optimum";
+		columnsNames[6] = "Measure";
+		columnsNames[7] = "Execution Time";
+		columnsNames[8] = "Evaluated states number";
 		
 		results.add(columnsNames);
 		avgResults.add(columnsNames);
 		
 		currentAlgName = "";
-		resultSum = 0;
+		distanceSum = 0;
 		timeSum = 0;
+		optimum = 0;
+		valueSum = 0;
 		measureSum = 0;
 		evaluatedStatesSum = 0;
 		resultCounter = 0;
@@ -54,24 +60,28 @@ public class ExTSSAExperimentSaver {
 	public void addExperimentResult(String problemName, AlgorithmResult algorithmResult) throws FileNotFoundException, IOException, NumberFormatException, ParseException {
 		int[] localisationsOrder = algorithmResult.getSolution().getState();
 		int localisationsSize = localisationsOrder.length;
-		String[] result = new String[7];
+		String[] result = new String[9];
 		
 		SolutionParser solutionParser = new SolutionParser();
 		StateEvaluation solution = solutionParser.parseSolutionFileFromResource("/"+problemName+".sln");
 		if(!currentAlgName.equals(algorithmResult.getAlgorithmName()) && !currentAlgName.equals("")){
-			String[] averageResult = new String[7];
+			String[] averageResult = new String[9];
 			averageResult[0] = currentAlgName;
 			averageResult[1] = currentProbName;
 			averageResult[2] = currentProbSize;
-			averageResult[3] = new Double(resultSum / resultCounter).toString();
+			averageResult[3] = new Long(optimum).toString();
 			averageResult[4] = new Double(measureSum / resultCounter).toString();
-			averageResult[5] = new Double(timeSum / resultCounter).toString();
-			averageResult[6] = new Double(evaluatedStatesSum / resultCounter).toString();
+			averageResult[5] = new Double(distanceSum / resultCounter).toString();
+			averageResult[6] = new Double(measureSum / resultCounter).toString();
+			averageResult[7] = new Double(timeSum / resultCounter).toString();
+			averageResult[8] = new Double(evaluatedStatesSum / resultCounter).toString();
 
 			avgResults.add(averageResult);
 			
-			resultSum = 0;
+			distanceSum = 0;
 			timeSum = 0;
+			optimum = 0;
+			valueSum = 0;
 			measureSum = 0;
 			evaluatedStatesSum = 0;
 			resultCounter = 0;
@@ -79,18 +89,22 @@ public class ExTSSAExperimentSaver {
 		currentAlgName = algorithmResult.getAlgorithmName();
 		currentProbName = problemName;
 		currentProbSize = String.valueOf(localisationsSize);
+		optimum = solution.getEvaluation();
 		result[0] = currentAlgName;
 		result[1] = currentProbName;
 		result[2] = currentProbSize;
-		result[3] = Long.toString(algorithmResult.getSolution().getEvaluation() - solution.getEvaluation());
-		result[4] = Double.toString(new Double(algorithmResult.getSolution().getEvaluation() - solution.getEvaluation())/solution.getEvaluation());
-		result[5] = Long.toString(algorithmResult.getExecutionReport().getExecutionTime());
-		result[6] = Integer.toString(algorithmResult.getExecutionReport().getEvaluatedStatesNumber());
+		result[3] = Long.toString(optimum);
+		result[4] = Long.toString(algorithmResult.getSolution().getEvaluation());
+		result[5] = Long.toString(algorithmResult.getSolution().getEvaluation() - optimum);
+		result[6] = Double.toString(new Double((new Double(algorithmResult.getSolution().getEvaluation() - optimum))/optimum));
+		result[7] = Long.toString(algorithmResult.getExecutionReport().getExecutionTime());
+		result[8] = Integer.toString(algorithmResult.getExecutionReport().getEvaluatedStatesNumber());
 
 		results.add(result);
 		
-		resultSum += algorithmResult.getSolution().getEvaluation() - solution.getEvaluation();
+		distanceSum += algorithmResult.getSolution().getEvaluation() - solution.getEvaluation();
 		timeSum += algorithmResult.getExecutionReport().getExecutionTime();
+		valueSum += algorithmResult.getSolution().getEvaluation();
 		measureSum += new Double(algorithmResult.getSolution().getEvaluation() - solution.getEvaluation())/solution.getEvaluation();
 		evaluatedStatesSum += algorithmResult.getExecutionReport().getEvaluatedStatesNumber();
 		resultCounter++;
@@ -125,14 +139,16 @@ public class ExTSSAExperimentSaver {
 	}
 
 	public void saveAverageFile(String path) {
-		String[] averageResult = new String[7];
+		String[] averageResult = new String[9];
 		averageResult[0] = currentAlgName;
 		averageResult[1] = currentProbName;
 		averageResult[2] = currentProbSize;
-		averageResult[3] = new Double(resultSum / resultCounter).toString();
-		averageResult[4] = new Double(measureSum/resultCounter).toString();
-		averageResult[5] = new Double(timeSum / resultCounter).toString();
-		averageResult[6] = new Double(evaluatedStatesSum / resultCounter).toString();
+		averageResult[3] = new Long(optimum).toString();
+		averageResult[4] = new Double(measureSum / resultCounter).toString();
+		averageResult[5] = new Double(distanceSum / resultCounter).toString();
+		averageResult[6] = new Double(measureSum / resultCounter).toString();
+		averageResult[7] = new Double(timeSum / resultCounter).toString();
+		averageResult[8] = new Double(evaluatedStatesSum / resultCounter).toString();
 
 		avgResults.add(averageResult);
 		
