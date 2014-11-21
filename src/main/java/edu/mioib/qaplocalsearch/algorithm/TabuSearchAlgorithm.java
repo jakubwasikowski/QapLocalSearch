@@ -8,6 +8,7 @@ import lombok.Value;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 
 import edu.mioib.qaplocalsearch.AlgorithmRunMeasurer;
 import edu.mioib.qaplocalsearch.Evaluator;
@@ -30,14 +31,13 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 		
 		int[] currentState = startState;
 		int[] bestState = currentState.clone();
-		long bestEval = evaluator.evaluateState(currentState);
+		long bestEval = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
 
 		List<Move> candidates = null;
 		
-		while (!checkIfInterrupt(measurer)
-				&& (currentIteration - lastIterationWithImprovement) < (markowChainLength * 10)) {
+		while (!checkIfInterrupt(measurer) && (currentIteration - lastIterationWithImprovement) < (markowChainLength)) {
 			if (candidates == null) {
-				candidates = generateCandidates(currentState, evaluator, eliteCandidatesNumber);
+				candidates = generateCandidates(currentState, evaluator, measurer, eliteCandidatesNumber);
 			}
 
 			Move minTabuCandIndex = null;
@@ -52,10 +52,9 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 					break;
 				}
 
-				int minTabuValueCandIdx1 = minTabuCandIndex.getIdx1();
-				int minTabuValueCandIdx2 = minTabuCandIndex.getIdx2();
-				if (minTabuCandIndex != null
-						&& tabu[currCandIdx1][currCandIdx2] < tabu[minTabuValueCandIdx1][minTabuValueCandIdx2]) {
+				if (minTabuCandIndex == null
+						|| tabu[currCandIdx1][currCandIdx2] < tabu[minTabuCandIndex.getIdx1()][minTabuCandIndex
+								.getIdx2()]) {
 					minTabuCandIndex = cand;
 				}
 			}
@@ -68,7 +67,7 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 
 			addMoveToTabu(tabu, currentIteration, chosenMove.getIdx1(), chosenMove.getIdx2());
 
-			long currentStateEval = evaluator.evaluateState(currentState);
+			long currentStateEval = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
 			if (currentStateEval < bestEval) {
 				bestState = currentState.clone();
 				bestEval = currentStateEval;
@@ -82,20 +81,21 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 		return bestState;
 	}
 
-	private List<Move> generateCandidates(int[] currentState, Evaluator evaluator, int eliteCandidatesNumber) {
-		List<Move> candidates = Lists.newArrayList();
+	private List<Move> generateCandidates(int[] currentState, Evaluator evaluator, AlgorithmRunMeasurer measurer,
+			int eliteCandidatesNumber) {
+		List<Move> candidates = Lists.newLinkedList();
 
 		TwoOptStateHolder neighbourIterator = new TwoOptStateHolder(currentState);
 		while (neighbourIterator.hasNextNeighbour()) {
 			neighbourIterator.nextNeighbour();
 			int idx1 = neighbourIterator.getIdx1();
 			int idx2 = neighbourIterator.getIdx2();
-			long stateEval = evaluator.evaluateState(currentState);
+			long stateEval = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
 			candidates.add(new Move(idx1, idx2, stateEval));
 		}
 		neighbourIterator.switchToOriginalState();
-
-		return FluentIterable.from(candidates).limit(eliteCandidatesNumber).toSortedList(new MoveComparator());
+		
+		return Ordering.from(new MoveComparator()).leastOf(FluentIterable.from(candidates), eliteCandidatesNumber);
 	}
 
 	@Override
