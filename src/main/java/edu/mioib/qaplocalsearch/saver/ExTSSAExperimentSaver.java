@@ -94,7 +94,7 @@ public class ExTSSAExperimentSaver {
 		result[1] = currentProbName;
 		result[2] = currentProbSize;
 		result[3] = Long.toString(optimum);
-		result[4] = Double.toString(algorithmResult.getSolution().getEvaluation());
+		result[4] = Long.toString(algorithmResult.getSolution().getEvaluation());
 		result[5] = Long.toString(algorithmResult.getSolution().getEvaluation() - optimum);
 		result[6] = Double.toString(new Double((new Double(algorithmResult.getSolution().getEvaluation() - optimum))/optimum));
 		result[7] = Long.toString(algorithmResult.getExecutionReport().getExecutionTime());
