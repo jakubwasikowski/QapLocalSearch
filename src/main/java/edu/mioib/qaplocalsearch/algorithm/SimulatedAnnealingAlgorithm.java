@@ -33,7 +33,7 @@ public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 		TwoOptStateHolder neighbourIterator;
 		double temperature = Double.MAX_VALUE;
 		double temperatureThreshold = Double.MIN_VALUE;
-		int markovLength = (int)Math.pow(startState.length,2)/2;
+		int markovLength = (int)Math.pow(startState.length,2)/4;
 		int lCounter = markovLength;
 		int lpCounter = iterationNumber * markovLength;
 
