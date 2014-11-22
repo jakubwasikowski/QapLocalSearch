@@ -71,7 +71,7 @@ public class ExTSSAExperimentSaver {
 			averageResult[1] = currentProbName;
 			averageResult[2] = currentProbSize;
 			averageResult[3] = new Long(optimum).toString();
-			averageResult[4] = new Double(measureSum / resultCounter).toString();
+			averageResult[4] = new Double(valueSum / resultCounter).toString();
 			averageResult[5] = new Double(distanceSum / resultCounter).toString();
 			averageResult[6] = new Double(measureSum / resultCounter).toString();
 			averageResult[7] = new Double(timeSum / resultCounter).toString();
@@ -145,7 +145,7 @@ public class ExTSSAExperimentSaver {
 		averageResult[1] = currentProbName;
 		averageResult[2] = currentProbSize;
 		averageResult[3] = new Long(optimum).toString();
-		averageResult[4] = new Double(measureSum / resultCounter).toString();
+		averageResult[4] = new Double(valueSum / resultCounter).toString();
 		averageResult[5] = new Double(distanceSum / resultCounter).toString();
 		averageResult[6] = new Double(measureSum / resultCounter).toString();
 		averageResult[7] = new Double(timeSum / resultCounter).toString();
