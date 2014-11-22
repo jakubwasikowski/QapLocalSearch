@@ -27,7 +27,7 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 		
 		long currentIteration = 0;
 		long lastIterationWithImprovement = 0;
-		int markowChainLength = problemSize * (problemSize - 1);
+		int markowChainLength = problemSize;
 		
 		int[] currentState = startState;
 		int[] bestState = currentState.clone();
@@ -76,6 +76,7 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 			}
 
 			currentIteration++;
+			measurer.recordStep();
 		}
 		
 		return bestState;
