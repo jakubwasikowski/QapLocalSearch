@@ -229,7 +229,7 @@ public class ExperimentRunner {
 	public void runExperimentForExerciseTSSA() throws NumberFormatException, ParseException, IOException {
 
 		final int executionNumber = 15;
-		String[] problemNameList = {"bur26g", "esc16e", "lipa40b", "nug18", "sko100a", "tai80a", "wil100", "kra30a", "scr12", "sko81"};
+		String[] problemNameList = {"bur26g", "esc16e", "lipa40b", "nug18", "sko100a", "tai80a", "wil100", "kra30a", "scr12", "sko81", "tho150", "tai256c"};
 
 		AbstractAlgorithm greedy = new GreedyAlgorithm();
 		AbstractAlgorithm steepest = new SteepestAlgorithm();
