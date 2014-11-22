@@ -15,7 +15,7 @@ import edu.mioib.qaplocalsearch.algorithm.neighboursgenerator.TwoOptStateHolder;
 public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 
 	double coolingRate;
-	int iterationCounter;
+	int iterationNumber;
 
 	public SimulatedAnnealingAlgorithm() {
 		this (0.9, 10);
@@ -32,28 +32,27 @@ public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 
 		TwoOptStateHolder neighbourIterator;
 		double temperature = Double.MAX_VALUE;
-		double temperatureTreshold = Double.MIN_VALUE;
-		int markovLength = startState.length^2/2;
+		double temperatureThreshold = Double.MIN_VALUE;
+		int markovLength = (int)Math.pow(startState.length,2)/2;
 		int lCounter = markovLength;
-		int lpCounter = iterationCounter * markovLength;
+		int lpCounter = iterationNumber * markovLength;
 
 		neighbourIterator = new TwoOptStateHolder(currentState);
-		double startCurrEval = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
-		double startBestEval = startCurrEval;
-		double startWorstEval = startCurrEval;
+		long startBestEval = currentEvaluation;
+		long startWorstEval = currentEvaluation;
 		for (int i = 0; i < neighbourIterator.getNeighboursNumber(); i++) {
 			neighbourIterator.nextNeighbour();
-			double temp = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
-			if(temp < startBestEval){
-				startBestEval = temp;
+			long currNeighbourEval = evaluateStateAndRecordEvaluation(evaluator, measurer, currentState);
+			if(currNeighbourEval < startBestEval){
+				startBestEval = currNeighbourEval;
 			}
-			if(startWorstEval < temp){
-				startWorstEval = temp;
+			if(startWorstEval < currNeighbourEval){
+				startWorstEval = currNeighbourEval;
 			}
 		}
 		neighbourIterator.switchToOriginalState();
-		temperature = (startCurrEval-startWorstEval)/Math.log(0.95);
-		temperatureTreshold = (startCurrEval-startBestEval)/Math.log(0.01);
+		temperature = (double)(currentEvaluation-startWorstEval)/Math.log(0.95);
+		temperatureThreshold = (double)(currentEvaluation-startBestEval)/Math.log(0.01);
 		
 		do{
 			lpCounter--;
@@ -74,17 +73,17 @@ public class SimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 				best = currentState.clone();
 				bestEvaluation = currentEvaluation;
 				lCounter = 0;
-				lpCounter = iterationCounter * markovLength;
+				lpCounter = iterationNumber * markovLength;
 			} else {
 				lCounter--;
 			}
 			
-			if(lCounter == 0){
+			if(lCounter <= 0){
 				temperature *= coolingRate;
 				lCounter = markovLength;
 			}
 			measurer.recordStep();
-		} while(lpCounter>0 && temperature>temperatureTreshold);
+		} while(lpCounter>0 && temperature>temperatureThreshold);
 		return best;
 	}
 
