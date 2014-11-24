@@ -23,7 +23,7 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 		int problemSize = startState.length;
 		int tabuSize = problemSize / 4;
 		int eliteCandidatesNumber = problemSize / 10;
-		long[][] tabu = new long[problemSize][problemSize];
+		long[][] tabu = initTabu(problemSize);
 		
 		long currentIteration = 0;
 		long lastIterationWithImprovement = 0;
@@ -82,6 +82,16 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 		return bestState;
 	}
 
+	private long[][] initTabu(int problemSize) {
+		long[][] result = new long[problemSize][problemSize];
+		for (int i = 0; i < result.length; i++) {
+			for (int j = 0; j < result[i].length; j++) {
+				result[i][j] = -1;
+			}
+		}
+		return result;
+	}
+
 	private List<Move> generateCandidates(int[] currentState, Evaluator evaluator, AlgorithmRunMeasurer measurer,
 			int eliteCandidatesNumber) {
 		List<Move> candidates = Lists.newLinkedList();
@@ -109,7 +119,10 @@ public class TabuSearchAlgorithm extends AbstractAlgorithm {
 	}
 
 	private boolean constainsMoveInTabu(long[][] tabu, int tabuSize, long currentIteration, int idx1, int idx2) {
-		return tabu[idx1][idx2] + tabuSize > currentIteration;
+		if (tabu[idx1][idx2] >= 0) {
+			return tabu[idx1][idx2] + tabuSize > currentIteration;
+		}
+		return false;
 	}
 
 	@Value
